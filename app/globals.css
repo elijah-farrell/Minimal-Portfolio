@@ -421,6 +421,112 @@ html.light {
   transition: all 0.3s ease;
 }
 
+/* Project Card Border Fade Effects */
+.section-fade-borders {
+  position: relative;
+}
+
+.section-fade-borders::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.2) 20%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(0, 0, 0, 0.2) 80%, 
+    transparent 100%
+  );
+  z-index: 10;
+}
+
+.section-fade-borders::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.2) 20%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(0, 0, 0, 0.2) 80%, 
+    transparent 100%
+  );
+  z-index: 10;
+}
+
+/* Left border fade effect */
+.section-fade-diagonal-left {
+  position: relative;
+}
+
+.section-fade-diagonal-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.2) 20%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(0, 0, 0, 0.2) 80%, 
+    transparent 100%
+  );
+  z-index: 10;
+}
+
+/* Right border fade effect */
+.section-fade-diagonal-right {
+  position: relative;
+}
+
+.section-fade-diagonal-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.2) 20%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(0, 0, 0, 0.2) 80%, 
+    transparent 100%
+  );
+  z-index: 10;
+}
+
+/* Dark mode adjustments for all fade effects */
+.dark .section-fade-borders::before,
+.dark .section-fade-borders::after {
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.15) 20%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    rgba(255, 255, 255, 0.15) 80%, 
+    transparent 100%
+  );
+}
+
+.dark .section-fade-diagonal-left::before,
+.dark .section-fade-diagonal-right::before {
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.15) 20%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    rgba(255, 255, 255, 0.15) 80%, 
+    transparent 100%
+  );
+}
+
 /* View Transitions API for cinematic theme switching */
 @supports (view-transition-name: root) {
   ::view-transition-old(root) { 

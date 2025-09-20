@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with Next.js and shadcn/ui components.
 
-[![Site Preview](./public/thumbnail.png)](https://ef-portfolio03.vercel.app/)
+[![Site Preview](./public/minimal.png)](https://mnml-portfolio.vercel.app/)
 
 ## Features
 
@@ -17,7 +17,8 @@ A modern, responsive portfolio website built with Next.js and shadcn/ui componen
 - **Framework**: Next.js 15
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Components**: shadcn/ui
+- **Components**: shadcn/ui, Radix UI, Aceternity UI
+- **Animations**: Framer Motion
 - **Theme**: next-themes (dark/light mode)
 
 ## Getting Started
@@ -45,7 +46,3 @@ npm run dev
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
-
-## License
-
-MIT License

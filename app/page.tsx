@@ -76,7 +76,7 @@ export default function Portfolio() {
           <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 items-center mb-10">
             <div 
               ref={(el) => { cardRefs.current[0] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
                 visibleCards[0] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
@@ -105,7 +105,7 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[1] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
                 visibleCards[1] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
@@ -134,7 +134,7 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[2] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
                 visibleCards[2] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
