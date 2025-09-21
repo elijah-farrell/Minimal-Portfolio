@@ -142,99 +142,49 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(true); // Start as true to prevent hydration issues
+  const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lastHoveredIndexRef = useRef<number | null>(null);
 
   const handleMouseEnter = (index: number) => {
-    // Remove mounted check to ensure navbar is always interactive
-    
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
-    setHoveredIndex(index);
     
-    // Force immediate visual update for dev mode
-    if (process.env.NODE_ENV === 'development') {
-      setTimeout(() => setHoveredIndex(index), 0);
+    // Only animate if we're transitioning from one button to another
+    const isTransitioning = hoveredIndex !== null && hoveredIndex !== index;
+    setShouldAnimate(isTransitioning);
+    
+    if (isTransitioning) {
+      lastHoveredIndexRef.current = hoveredIndex;
     }
+    
+    setHoveredIndex(index);
   };
 
   const handleMouseLeave = () => {
-    // Remove mounted check to ensure navbar is always interactive
-    
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
     hoverTimeoutRef.current = setTimeout(() => {
       setHoveredIndex(null);
-    }, 150); // Slightly longer delay for dev mode stability
+      lastHoveredIndexRef.current = null;
+      setShouldAnimate(false);
+    }, 150);
   };
 
-  // Better hover detection for development mode
-  const detectCurrentHover = () => {
-    if (!containerRef.current) return;
-    
-    // Use mouse position to detect which item should be hovered
-    const handleMouseMove = (e: MouseEvent) => {
-      const container = containerRef.current;
-      if (!container) return;
-      
-      const containerRect = container.getBoundingClientRect();
-      const mouseX = e.clientX;
-      
-      // Check if mouse is within the container
-      if (mouseX >= containerRect.left && mouseX <= containerRect.right) {
-        const navItems = container.querySelectorAll('[data-nav-item]');
-        let foundHover = false;
-        
-        navItems.forEach((item, index) => {
-          const itemRect = item.getBoundingClientRect();
-          if (mouseX >= itemRect.left && mouseX <= itemRect.right) {
-            setHoveredIndex(index);
-            foundHover = true;
-          }
-        });
-        
-        if (!foundHover) {
-          setHoveredIndex(null);
-        }
-      }
-    };
-    
-    // Listen for mouse movement for a short time to detect current position
-    document.addEventListener('mousemove', handleMouseMove);
-    setTimeout(() => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    }, 200);
-  };
-
-  // Mount effect and dev mode re-render handling
+  // Simple mount effect
   useEffect(() => {
     setMounted(true);
     
-    // Small delay to ensure DOM is fully ready, then detect current hover
-    const timer = setTimeout(() => {
-      detectCurrentHover();
-    }, 100);
-    
     return () => {
-      clearTimeout(timer);
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
       }
     };
   }, []);
-
-  // Re-detect hover state when component re-renders (dev mode)
-  useEffect(() => {
-    if (mounted) {
-      const timer = setTimeout(() => {
-        detectCurrentHover();
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [mounted, items]);
 
   // Force re-render when hoveredIndex changes to update hover position
   useEffect(() => {
@@ -323,7 +273,7 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
         className="absolute bg-gray-100 dark:bg-neutral-800 rounded-lg transition-all h-full top-0" 
         style={{
           ...getHoverStyle(),
-          transitionDuration: process.env.NODE_ENV === 'development' ? '200ms' : '300ms',
+          transitionDuration: shouldAnimate ? '200ms' : '0ms',
           transitionTimingFunction: 'ease-out',
         }}
       />
