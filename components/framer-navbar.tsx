@@ -101,23 +101,37 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
           boxShadow: visible
             ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
             : "none",
+          // Add responsive width animation - slide inward on larger screens
+          left: visible ? "5%" : "3%",
+          right: visible ? "5%" : "3%",
         }}
         transition={{
-          duration: 0.2,
+          duration: 0.3,
           ease: "easeOut",
         }}
         className={cn(
-          "absolute left-8 right-8 top-0 bottom-0 rounded-full overflow-hidden",
+          "absolute top-0 bottom-0 rounded-full overflow-hidden",
           visible ? "bg-white/95 dark:bg-[#171717]/90 border border-white/30 dark:border-[#2a2a2a]/20" : "bg-transparent",
         )}
       />
       {/* Content container with original layout - always visible */}
-      <div className={cn(
-        "relative z-10 flex w-full flex-row items-center justify-between",
-        className,
-      )}>
+      <motion.div 
+        className={cn(
+          "relative z-10 flex w-full flex-row items-center justify-between",
+          className,
+        )}
+        animate={{
+          // Move nav items inward slightly when navbar background is visible
+          paddingLeft: visible ? "0.5rem" : "0rem",
+          paddingRight: visible ? "0.5rem" : "0rem",
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "easeOut",
+        }}
+      >
         {children}
-      </div>
+      </motion.div>
     </div>
   );
 });
@@ -242,9 +256,22 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
   //   );
   // }
 
+  // Store the last valid position to prevent sliding back on unhover
+  const lastPositionRef = useRef<{left: number, width: number} | null>(null);
+
   // Calculate hover background position and size based on actual item dimensions
   const getHoverStyle = () => {
     if (hoveredIndex === null || !itemRefs.current[hoveredIndex]) {
+      // When no item is hovered, just fade out at the current position
+      const lastPosition = lastPositionRef.current;
+      if (lastPosition) {
+        return {
+          opacity: 0,
+          width: `${lastPosition.width}px`,
+          left: `${lastPosition.left}px`,
+          transform: 'translateX(0)',
+        };
+      }
       return {
         opacity: 0,
         width: 0,
@@ -270,6 +297,9 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
     
     const left = itemRect.left - containerRect.left;
     const width = itemRect.width;
+
+    // Store the current position for unhover fade-out
+    lastPositionRef.current = { left, width };
 
     return {
       opacity: 1,

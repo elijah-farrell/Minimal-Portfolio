@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   generator: "v0.app",
   icons: {
     icon: [
-      { url: "/minimal.png", type: "image/png", sizes: "32x32" },
-      { url: "/minimal.png", type: "image/png", sizes: "16x16" }
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png", sizes: "16x16" }
     ],
-    shortcut: "/minimal.png",
-    apple: "/minimal.png"
+    shortcut: "/favicon.png",
+    apple: "/favicon.png"
   }
 }
 
