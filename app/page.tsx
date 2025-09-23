@@ -59,13 +59,18 @@ export default function Portfolio() {
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-20">
           <div className="max-w-2xl mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <TextGenerateEffectTitle text="John Doe Smith" />
-              <LayoutTextFlip
-                text=""
-                words={["Software Developer", "Full Stack Engineer", "Frontend Specialist", "React Developer", "TypeScript Expert", "UI/UX Designer"]}
-                duration={2500}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+              <TextGenerateEffectTitle 
+                text="John Smith" 
+                className="text-4xl font-bold text-gray-900 dark:text-white mb-2 drop-shadow-lg"
               />
+              <div className="w-full sm:w-auto">
+                <LayoutTextFlip
+                  text=""
+                  words={["Software Developer", "Full Stack Engineer", "Frontend Specialist", "React Developer", "TypeScript Expert", "UI/UX Designer"]}
+                  duration={2500}
+                />
+              </div>
             </div>
             <BlurText
               text="I'm a product designer and frontend engineer focused on creating beautiful, functional experiences that solve real problems for people."
