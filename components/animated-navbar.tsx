@@ -5,7 +5,13 @@ import { DarkModeToggle } from "@/components/dark-mode-toggle"
 import { cn } from "@/lib/utils"
 
 export function AnimatedNavbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
+  // Initialize with correct scroll state to prevent animation on refresh
+  const [isScrolled, setIsScrolled] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.scrollY > 10
+    }
+    return false
+  })
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -15,10 +21,6 @@ export function AnimatedNavbar() {
       const scrollTop = window.scrollY
       setIsScrolled(scrollTop > 10)
     }
-
-    // Check initial scroll position
-    const scrollTop = window.scrollY
-    setIsScrolled(scrollTop > 10)
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)

@@ -55,13 +55,13 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   const internalRef = useRef<HTMLDivElement>(null);
   const ref = (externalRef as React.RefObject<HTMLDivElement>) || internalRef;
   const { scrollY } = useScroll();
-  const [visible, setVisible] = useState<boolean>(true); // Start as true to show background on load
-
-  // Check initial scroll position on mount
-  useEffect(() => {
-    const initialScrollY = window.scrollY;
-    setVisible(initialScrollY > 10);
-  }, []);
+  // Initialize with correct scroll state to prevent animation on refresh
+  const [visible, setVisible] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return window.scrollY > 10;
+    }
+    return true; // Default to true for SSR
+  });
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 10) {
@@ -96,6 +96,14 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
     <div className="relative z-10 mx-auto hidden md:flex w-full max-w-4xl px-12 py-3">
       {/* Background container constrained to inner content area */}
       <motion.div
+        initial={{
+          backdropFilter: visible ? "blur(8px)" : "none",
+          boxShadow: visible
+            ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
+            : "none",
+          left: visible ? "5%" : "3%",
+          right: visible ? "5%" : "3%",
+        }}
         animate={{
           backdropFilter: visible ? "blur(8px)" : "none",
           boxShadow: visible
@@ -120,6 +128,10 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
           "relative z-10 flex w-full flex-row items-center justify-between",
           className,
         )}
+        initial={{
+          paddingLeft: visible ? "0.5rem" : "0rem",
+          paddingRight: visible ? "0.5rem" : "0rem",
+        }}
         animate={{
           // Move nav items inward slightly when navbar background is visible
           paddingLeft: visible ? "0.5rem" : "0rem",
