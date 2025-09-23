@@ -9,6 +9,7 @@ import { BlogSection } from "@/components/blog-section"
 import { TextGenerateEffectTitle } from "@/components/ui/text-generate-effect-title"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import BlurText from "@/components/ui/blur-text"
+import { LayoutTextFlip } from "@/components/ui/layout-text-flip"
 import { Mail, Github, Linkedin, Twitter } from "lucide-react"
 import { Card as HeroCard, CardHeader, CardFooter, Button as HeroButton } from "@heroui/react"
 import Image from "next/image"
@@ -58,7 +59,14 @@ export default function Portfolio() {
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-20">
           <div className="max-w-2xl mb-8">
-            <TextGenerateEffectTitle text="John Doe Smith" />
+            <div className="flex items-center gap-2 mb-4">
+              <TextGenerateEffectTitle text="John Doe Smith" />
+              <LayoutTextFlip
+                text=""
+                words={["Software Developer", "Full Stack Engineer", "Frontend Specialist", "React Developer", "TypeScript Expert", "UI/UX Designer"]}
+                duration={2500}
+              />
+            </div>
             <BlurText
               text="I'm a product designer and frontend engineer focused on creating beautiful, functional experiences that solve real problems for people."
               className="text-xl text-gray-600 dark:text-gray-400 mb-6 leading-relaxed"
