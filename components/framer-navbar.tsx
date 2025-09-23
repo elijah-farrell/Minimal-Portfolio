@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect, memo, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -18,6 +18,7 @@ interface NavBodyProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  animationsEnabled?: boolean;
 }
 
 interface NavItemsProps {
@@ -37,6 +38,7 @@ interface MobileNavProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  animationsEnabled?: boolean;
 }
 
 interface MobileNavHeaderProps {
@@ -55,19 +57,36 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   const internalRef = useRef<HTMLDivElement>(null);
   const ref = (externalRef as React.RefObject<HTMLDivElement>) || internalRef;
   const { scrollY } = useScroll();
-  // Initialize with correct scroll state to prevent animation on refresh
-  const [visible, setVisible] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return window.scrollY > 10;
+  
+  // Initialize with SSR-safe default - prioritize top-of-page experience
+  const [visible, setVisible] = useState<boolean>(false); // Always start transparent for SSR
+  const [animationsEnabled, setAnimationsEnabled] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Use useLayoutEffect to set initial state synchronously before paint
+  useLayoutEffect(() => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+      const initialScrollY = window.scrollY;
+      const shouldBeVisible = initialScrollY > 10;
+      setVisible(shouldBeVisible);
+      
+      // If we're scrolled down, enable animations immediately for smooth transition
+      if (shouldBeVisible) {
+        setAnimationsEnabled(true);
+      }
     }
-    return true; // Default to true for SSR
-  });
+  }, [isInitialized]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 10) {
-      setVisible(true);
+      setVisible(true); // Visible (with background) when scrolled
     } else {
-      setVisible(false); // Transparent only at very top of page
+      setVisible(false); // Transparent at top
+    }
+    // Enable animations after first scroll interaction
+    if (!animationsEnabled) {
+      setAnimationsEnabled(true);
     }
   });
 
@@ -80,8 +99,8 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
-              child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
+              child as React.ReactElement<{ visible?: boolean; animationsEnabled?: boolean }>,
+              { visible, animationsEnabled },
             )
           : child,
       )}
@@ -91,18 +110,32 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
 
 Navbar.displayName = 'Navbar';
 
-export const NavBody = React.memo(({ children, className, visible }: NavBodyProps) => {
+export const NavBody = React.memo(({ children, className, visible, animationsEnabled = false }: NavBodyProps) => {
+  const [isInitialized, setIsInitialized] = useState(false);
+  
+  useLayoutEffect(() => {
+    setIsInitialized(true);
+  }, []);
+
+  // Calculate the exact initial state to prevent any animation
+  const initialLeft = visible ? "5%" : "3%";
+  const initialRight = visible ? "5%" : "3%";
+  const initialPaddingLeft = visible ? "0.5rem" : "0rem";
+  const initialPaddingRight = visible ? "0.5rem" : "0rem";
+  const initialBackdropFilter = visible ? "blur(8px)" : "none";
+  const initialBoxShadow = visible 
+    ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
+    : "none";
+
   return (
     <div className="relative z-10 mx-auto hidden md:flex w-full max-w-4xl px-12 py-3">
       {/* Background container constrained to inner content area */}
       <motion.div
         initial={{
-          backdropFilter: visible ? "blur(8px)" : "none",
-          boxShadow: visible
-            ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
-            : "none",
-          left: visible ? "5%" : "3%",
-          right: visible ? "5%" : "3%",
+          backdropFilter: initialBackdropFilter,
+          boxShadow: initialBoxShadow,
+          left: initialLeft,
+          right: initialRight,
         }}
         animate={{
           backdropFilter: visible ? "blur(8px)" : "none",
@@ -114,7 +147,7 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
           right: visible ? "5%" : "3%",
         }}
         transition={{
-          duration: 0.3,
+          duration: animationsEnabled && isInitialized ? 0.15 : 0,
           ease: "easeOut",
         }}
         className={cn(
@@ -129,8 +162,8 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
           className,
         )}
         initial={{
-          paddingLeft: visible ? "0.5rem" : "0rem",
-          paddingRight: visible ? "0.5rem" : "0rem",
+          paddingLeft: initialPaddingLeft,
+          paddingRight: initialPaddingRight,
         }}
         animate={{
           // Move nav items inward slightly when navbar background is visible
@@ -138,7 +171,7 @@ export const NavBody = React.memo(({ children, className, visible }: NavBodyProp
           paddingRight: visible ? "0.5rem" : "0rem",
         }}
         transition={{
-          duration: 0.3,
+          duration: animationsEnabled && isInitialized ? 0.15 : 0,
           ease: "easeOut",
         }}
       >
@@ -369,9 +402,25 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
 
 NavItems.displayName = 'NavItems';
 
-export const MobileNav = React.memo(({ children, className, visible }: MobileNavProps) => {
+export const MobileNav = React.memo(({ children, className, visible, animationsEnabled = false }: MobileNavProps) => {
+  const [isInitialized, setIsInitialized] = useState(false);
+  
+  useLayoutEffect(() => {
+    setIsInitialized(true);
+  }, []);
+
+  // Calculate the exact initial state to prevent any animation
+  const initialBackdropFilter = visible ? "blur(8px)" : "none";
+  const initialBoxShadow = visible
+    ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
+    : "none";
+
   return (
     <motion.div
+      initial={{
+        backdropFilter: initialBackdropFilter,
+        boxShadow: initialBoxShadow,
+      }}
       animate={{
         backdropFilter: visible ? "blur(8px)" : "none",
         boxShadow: visible
@@ -379,7 +428,7 @@ export const MobileNav = React.memo(({ children, className, visible }: MobileNav
           : "none",
       }}
       transition={{
-        duration: 0.2,
+        duration: animationsEnabled && isInitialized ? 0.1 : 0,
         ease: "easeOut",
       }}
        className={cn(

@@ -13,6 +13,7 @@ export function AnimatedNavbar() {
     return false
   })
   const [mounted, setMounted] = useState(false)
+  const [animationsEnabled, setAnimationsEnabled] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -20,11 +21,15 @@ export function AnimatedNavbar() {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       setIsScrolled(scrollTop > 10)
+      // Enable animations after first scroll interaction
+      if (!animationsEnabled) {
+        setAnimationsEnabled(true)
+      }
     }
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [animationsEnabled])
 
   if (!mounted) {
     return null
@@ -33,13 +38,15 @@ export function AnimatedNavbar() {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
+        "fixed top-0 left-0 right-0 z-50 transition-all ease-out",
+        animationsEnabled ? "duration-500" : "duration-0",
         isScrolled ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
       )}
     >
       <div className="max-w-4xl mx-auto px-6 py-4">
         <nav className={cn(
-          "relative border border-gray-200 dark:border-[#2a2a2a] bg-white/98 dark:bg-[#171717]/95 backdrop-blur-md shadow-lg transition-all duration-500 ease-out",
+          "relative border border-gray-200 dark:border-[#2a2a2a] bg-white/98 dark:bg-[#171717]/95 backdrop-blur-md shadow-lg transition-all ease-out",
+          animationsEnabled ? "duration-500" : "duration-0",
           isScrolled 
             ? "rounded-full px-8 py-4" 
             : "rounded-lg px-2 py-4"
