@@ -58,45 +58,48 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   const ref = (externalRef as React.RefObject<HTMLDivElement>) || internalRef;
   const { scrollY } = useScroll();
   
-  // Initialize with SSR-safe default - prioritize top-of-page experience
-  const [visible, setVisible] = useState<boolean>(false); // Always start transparent for SSR
+  // Initialize with SSR-safe default - always start transparent
+  const [visible, setVisible] = useState<boolean>(false);
   const [animationsEnabled, setAnimationsEnabled] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Handle mounting state for SSR
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Use useLayoutEffect to set initial state synchronously before paint
   useLayoutEffect(() => {
-    if (!isInitialized) {
+    if (!isInitialized && isMounted) {
       setIsInitialized(true);
       
-      // Check if we have a stored scroll state from previous page navigation
-      const storedScrollState = sessionStorage.getItem('navbar-scroll-state');
-      const wasScrolledDown = storedScrollState === 'true';
-      
+      // Always start with transparent navbar on new page load
+      // Only show navbar if we're actually scrolled down on the current page
       const initialScrollY = window.scrollY;
-      const shouldBeVisible = initialScrollY > 10 || wasScrolledDown;
+      const shouldBeVisible = initialScrollY > 10;
       setVisible(shouldBeVisible);
       
-      // If we're scrolled down or were previously scrolled, enable animations immediately
+      // If we're scrolled down, enable animations immediately
       if (shouldBeVisible) {
         setAnimationsEnabled(true);
       }
       
-      // Clear the stored state after using it
-      if (storedScrollState) {
+      // Clear any stored scroll state on page load
+      if (typeof window !== 'undefined') {
         sessionStorage.removeItem('navbar-scroll-state');
       }
     }
-  }, [isInitialized]);
+  }, [isInitialized, isMounted]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    // Only handle scroll events after component is mounted
+    if (!isMounted) return;
+    
     if (latest > 10) {
       setVisible(true); // Visible (with background) when scrolled
-      // Store scroll state for page navigation
-      sessionStorage.setItem('navbar-scroll-state', 'true');
     } else {
       setVisible(false); // Transparent at top
-      // Store scroll state for page navigation
-      sessionStorage.setItem('navbar-scroll-state', 'false');
     }
     // Enable animations after first scroll interaction
     if (!animationsEnabled) {
@@ -114,7 +117,10 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
         React.isValidElement(child)
           ? React.cloneElement(
               child as React.ReactElement<{ visible?: boolean; animationsEnabled?: boolean }>,
-              { visible, animationsEnabled },
+              { 
+                visible: isMounted ? visible : false, // Always start transparent during SSR
+                animationsEnabled: isMounted ? animationsEnabled : false 
+              },
             )
           : child,
       )}
