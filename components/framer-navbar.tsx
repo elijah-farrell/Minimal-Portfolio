@@ -67,13 +67,23 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   useLayoutEffect(() => {
     if (!isInitialized) {
       setIsInitialized(true);
+      
+      // Check if we have a stored scroll state from previous page navigation
+      const storedScrollState = sessionStorage.getItem('navbar-scroll-state');
+      const wasScrolledDown = storedScrollState === 'true';
+      
       const initialScrollY = window.scrollY;
-      const shouldBeVisible = initialScrollY > 10;
+      const shouldBeVisible = initialScrollY > 10 || wasScrolledDown;
       setVisible(shouldBeVisible);
       
-      // If we're scrolled down, enable animations immediately for smooth transition
+      // If we're scrolled down or were previously scrolled, enable animations immediately
       if (shouldBeVisible) {
         setAnimationsEnabled(true);
+      }
+      
+      // Clear the stored state after using it
+      if (storedScrollState) {
+        sessionStorage.removeItem('navbar-scroll-state');
       }
     }
   }, [isInitialized]);
@@ -81,8 +91,12 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 10) {
       setVisible(true); // Visible (with background) when scrolled
+      // Store scroll state for page navigation
+      sessionStorage.setItem('navbar-scroll-state', 'true');
     } else {
       setVisible(false); // Transparent at top
+      // Store scroll state for page navigation
+      sessionStorage.setItem('navbar-scroll-state', 'false');
     }
     // Enable animations after first scroll interaction
     if (!animationsEnabled) {
