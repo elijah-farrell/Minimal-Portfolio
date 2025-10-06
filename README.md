@@ -1,23 +1,15 @@
 # Minimal Portfolio Template
 
-A modern, responsive portfolio website built with Next.js and shadcn/ui components.
+A modern, responsive portfolio website built with Next.js.
 
 [![Site Preview](./public/minimal.png)](https://mnml-portfolio.vercel.app/)
 
-## Features
-
-- **Modern Design**: Clean, minimal interface with dark mode support
-- **Responsive**: Optimized for all device sizes
-- **Fast Performance**: Built with Next.js 15 and React 19
-- **Component Library**: Complete shadcn/ui component system
-- **TypeScript**: Full type safety throughout the application
-
 ## Tech Stack
 
-- **Framework**: Next.js 15
+- **Framework**: Next.js 15 (React)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Components**: shadcn/ui, Radix UI, Aceternity UI
+- **Components**: Aceternity UI, Shadcn UI, Radix UI
 - **Animations**: Framer Motion
 - **Theme**: next-themes (dark/light mode)
 

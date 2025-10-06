@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { ThemeProvider } from "@/components/theme-provider"
-import { PortfolioNavbar } from "@/components/portfolio-navbar"
+import { PortfolioNavbar } from "@/components/navbar"
 import "./globals.css"
 
 export const metadata: Metadata = {
