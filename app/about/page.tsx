@@ -9,7 +9,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import BlurText from "@/components/ui/blur-text"
 import { Mail, Github, Linkedin, Twitter, Download, MapPin, Calendar, Code, Palette, Users } from "lucide-react"
 import Image from "next/image"
-import { DraggableCardDemo } from "@/components/draggable-card-demo"
+import { DraggableCardDemo } from "@/components/draggable-cards"
 import LogoLoop from "@/components/ui/logo-loop"
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPython, SiAmazon, SiFigma, SiAdobephotoshop, SiAdobexd, SiGit, SiDocker, SiPostgresql, SiMongodb, SiFirebase, SiVercel, SiNetlify } from "react-icons/si"
 
