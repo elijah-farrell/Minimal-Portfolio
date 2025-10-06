@@ -11,7 +11,6 @@ import { Mail, Github, Linkedin, Twitter, Download, MapPin, Calendar, Code, Pale
 import Image from "next/image"
 import { DraggableCardDemo } from "@/components/draggable-card-demo"
 import LogoLoop from "@/components/ui/logo-loop"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPython, SiAmazon, SiFigma, SiAdobephotoshop, SiAdobexd, SiGit, SiDocker, SiPostgresql, SiMongodb, SiFirebase, SiVercel, SiNetlify } from "react-icons/si"
 
 export default function AboutPage() {

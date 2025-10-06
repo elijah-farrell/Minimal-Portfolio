@@ -76,6 +76,7 @@ export default function ContactPage() {
                       onChange={handleInputChange}
                       className="border-gray-200 dark:border-[#2a2a2a] bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-gray-400 dark:focus:border-gray-500"
                       required
+                      autocomplete="name"
                     />
                   </div>
 
@@ -92,6 +93,7 @@ export default function ContactPage() {
                       onChange={handleInputChange}
                       className="border-gray-200 dark:border-[#2a2a2a] bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-gray-400 dark:focus:border-gray-500"
                       required
+                      autocomplete="email"
                     />
                   </div>
 

@@ -3,7 +3,7 @@ import {
   DraggableCardBody,
   DraggableCardContainer,
 } from "@/components/ui/draggable-card";
-import Carousel from "@/components/ui/carousel";
+import Carousel from "@/components/ui/image-carousel";
 
 export function DraggableCardDemo() {
   const [visibleCards, setVisibleCards] = useState<boolean[]>(new Array(5).fill(false));

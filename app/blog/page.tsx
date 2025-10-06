@@ -172,6 +172,8 @@ export default function BlogPage() {
                 type="email"
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-2 border border-gray-200 dark:border-[#2a2a2a] rounded-lg bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
+                autoComplete="email"
+                name="email"
               />
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200">
                 Subscribe
