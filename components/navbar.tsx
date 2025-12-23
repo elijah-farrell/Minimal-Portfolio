@@ -53,7 +53,6 @@ const PortfolioNavbar = memo(() => {
             <NavbarLogo onCloseMobileMenu={() => setMobileMenuOpen(false)} />
           </div>
           <div className="flex items-center gap-1 mr-4 relative z-[100]">
-            <DarkModeToggle />
             <MobileNavToggle 
               isOpen={mobileMenuOpen}
               onClick={handleMobileMenuToggle}
@@ -77,6 +76,9 @@ const PortfolioNavbar = memo(() => {
               {item.name}
             </Link>
           ))}
+          <div className="flex justify-center">
+            <DarkModeToggle />
+          </div>
         </MobileNavMenu>
       </MobileNav>
     </Navbar>

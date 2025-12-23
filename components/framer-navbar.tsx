@@ -107,11 +107,25 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
     }
   });
 
+  // Calculate initial top position
+  const initialTop = visible ? "0.5rem" : "0rem";
+
   return (
     <motion.div
       ref={ref}
       className={cn("fixed inset-x-0 z-[60] w-full px-0 bg-transparent", className)}
       style={{ position: 'fixed', visibility: 'visible' }}
+      initial={{
+        top: initialTop,
+      }}
+      animate={{
+        // Push down from top when visible (scrolled) - creates spacing from screen top
+        top: visible ? "0.5rem" : "0rem",
+      }}
+      transition={{
+        duration: animationsEnabled && isInitialized ? 0.15 : 0,
+        ease: "easeOut",
+      }}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
@@ -148,7 +162,7 @@ export const NavBody = React.memo(({ children, className, visible, animationsEna
     : "none";
 
   return (
-    <div className="relative z-10 mx-auto hidden md:flex w-full max-w-4xl px-12 py-3">
+    <div className="relative z-10 mx-auto hidden md:flex w-full max-w-4xl px-12 py-2">
       {/* Background container constrained to inner content area */}
       <motion.div
         initial={{
@@ -328,7 +342,7 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
     <div
       ref={containerRef}
       className={cn(
-        "flex flex-row items-center text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 relative h-10 nav-container group",
+        "flex flex-row items-center text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 relative h-8 nav-container group",
         className,
       )}
       onMouseLeave={handleMouseLeave}
@@ -384,7 +398,7 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-neutral-950 rounded-lg border border-gray-200 dark:border-neutral-700 py-2 z-[9999]"
+                    className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-neutral-950 rounded-lg border border-[#f5f5f5] dark:border-neutral-700 py-2 z-[9999]"
                   >
                     {item.sections?.map((section, sectionIdx) => (
                       <button
@@ -452,7 +466,7 @@ export const MobileNav = React.memo(({ children, className, visible, animationsE
         ease: "easeOut",
       }}
        className={cn(
-         "relative z-10 mx-auto flex w-full max-w-4xl flex-row items-center px-4 py-3 md:hidden",
+         "relative z-10 mx-auto flex w-full max-w-4xl flex-row items-center px-4 py-2 md:hidden",
          visible ? "bg-white/95 dark:bg-[#171717]/90 border-b border-white/30 dark:border-[#2a2a2a]/20" : "bg-transparent",
          className,
        )}
@@ -555,7 +569,7 @@ export const NavbarLogo = memo(({ onCloseMobileMenu }: { onCloseMobileMenu?: () 
         aria-label="Go to home page"
       >
         <div className={`relative w-11 h-11 rounded-full overflow-hidden transition-all duration-200 ${
-          isClicked ? 'border-0' : 'border-2 border-gray-200 dark:border-[#2a2a2a] hover:border-gray-400 dark:hover:border-gray-500'
+          isClicked ? 'border-0' : 'border-2 border-[#f5f5f5] dark:border-[#1f1f1f] hover:border-gray-400 dark:hover:border-gray-500'
         }`}>
           <img 
             src="/pfp.jpg" 

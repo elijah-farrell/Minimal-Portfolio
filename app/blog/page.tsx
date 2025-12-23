@@ -75,7 +75,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0A0A0A] transition-colors border-none outer-background">
-      <div className="border-gray-200 dark:border-[#2a2a2a] min-h-screen max-w-4xl mx-auto bg-white dark:bg-[#171717] shadow-sm border-r-[19px] border-l-[19px] md:border-r-[31px] md:border-l-[31px] relative" style={{ position: 'relative' }}>
+      <div className="border-[#f5f5f5] dark:border-[#1f1f1f] min-h-screen max-w-4xl mx-auto bg-white dark:bg-[#171717] shadow-sm border-r-[19px] border-l-[19px] md:border-r-[31px] md:border-l-[31px] relative" style={{ position: 'relative' }}>
         <DiagonalStripes />
 
         {/* Hero Section */}
@@ -84,7 +84,7 @@ export default function BlogPage() {
             <TextGenerateEffectTitle text="Blog" />
             <BlurText
               text="Thoughts on design, development, and the intersection of technology and creativity."
-              className="text-xl text-gray-600 dark:text-gray-400 mb-6 leading-relaxed"
+              className="text-xl text-[#737373] dark:text-[#737373] mb-6 leading-relaxed"
               direction="bottom"
               animateBy="letters"
               delay={25}
@@ -92,7 +92,7 @@ export default function BlogPage() {
           </div>
           
           {/* Full width border line */}
-          <div className="border-b border-gray-100 dark:border-[#2a2a2a] mb-6 -mx-6"></div>
+          <div className="border-b border-[#f5f5f5] dark:border-[#1f1f1f] mb-6 -mx-6"></div>
         </section>
 
         {/* Blog Posts Section */}
@@ -112,12 +112,12 @@ export default function BlogPage() {
               >
                 <Link href={`/blog/${post.slug}`}>
                   <article 
-                    className="group cursor-pointer border-b border-gray-100 dark:border-[#2a2a2a] pb-8 last:border-b-0 hover:bg-gray-50/50 dark:hover:bg-[#1a1a1a]/50 transition-all duration-300 rounded-lg p-6 -m-6"
+                    className="group cursor-pointer border-b border-[#f5f5f5] dark:border-[#1f1f1f] pb-8 last:border-b-0 hover:bg-gray-50/50 dark:hover:bg-[#1a1a1a]/50 transition-all duration-300 rounded-lg p-6 -m-6"
                   >
                   <div className="flex flex-col md:flex-row md:items-start gap-4">
                     {/* Content */}
                     <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-3 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-4 mb-3 text-sm text-[#737373] dark:text-[#737373]">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>{post.date}</span>
@@ -132,11 +132,11 @@ export default function BlogPage() {
                         {post.title}
                       </h2>
                       
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                      <p className="text-[#737373] dark:text-[#737373] leading-relaxed mb-4">
                         {post.description}
                       </p>
                       
-                      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                      <div className="flex items-center gap-2 text-sm text-[#737373] dark:text-[#737373] group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
                         <span>Read more</span>
                         <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -159,19 +159,19 @@ export default function BlogPage() {
         </section>
 
         {/* Newsletter Signup */}
-        <section className="max-w-4xl mx-auto px-6 py-12 border-t border-gray-100 dark:border-[#2a2a2a] bg-white dark:bg-[#171717]">
+        <section className="max-w-4xl mx-auto px-6 py-12 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               Stay Updated
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-[#737373] dark:text-[#737373] mb-6">
               Get notified when I publish new articles about design, development, and technology. You can unsubscribe anytime.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 border border-gray-200 dark:border-[#2a2a2a] rounded-lg bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
+                className="flex-1 px-4 py-2 border border-[#f5f5f5] dark:border-[#1f1f1f] rounded-lg bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
                 autoComplete="email"
                 name="email"
               />
@@ -183,19 +183,19 @@ export default function BlogPage() {
         </section>
 
         {/* Footer */}
-        <footer className="max-w-4xl mx-auto px-6 py-8 border-t border-gray-100 dark:border-[#2a2a2a] bg-white dark:bg-[#171717]">
+        <footer className="max-w-4xl mx-auto px-6 py-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[#737373] dark:text-[#737373]">
               Built by Elijah Farrell
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
             </div>

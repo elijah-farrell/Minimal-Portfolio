@@ -2,11 +2,10 @@
 
 import * as React from "react"
 import { useTheme } from "next-themes"
-import { ThemeToggleButton, useThemeTransition } from "@/components/ui/theme-toggle-button"
+import { ThemeToggleButton } from "@/components/ui/theme-toggle-button"
 
 const DarkModeToggle = React.memo(() => {
   const { theme, setTheme, resolvedTheme } = useTheme()
-  const { startTransition } = useThemeTransition()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -15,11 +14,16 @@ const DarkModeToggle = React.memo(() => {
 
   const handleThemeChange = React.useCallback(() => {
     const newTheme = theme === "light" ? "dark" : "light"
-    
-    startTransition(() => {
-      setTheme(newTheme)
-    })
-  }, [theme, setTheme, startTransition])
+    if (typeof document !== "undefined") {
+      const root = document.documentElement
+      root.classList.add("instant-theme")
+      // Remove the instant-theme flag shortly after the switch
+      window.setTimeout(() => {
+        root.classList.remove("instant-theme")
+      }, 200)
+    }
+    setTheme(newTheme)
+  }, [theme, setTheme])
 
   // Use resolvedTheme to get the actual theme (handles 'system' theme)
   const currentTheme = mounted && resolvedTheme ? (resolvedTheme as "light" | "dark") : "dark"

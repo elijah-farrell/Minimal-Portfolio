@@ -15,12 +15,45 @@ export const LayoutTextFlip = ({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, duration);
+    let interval: number | undefined;
 
-    return () => clearInterval(interval);
-  }, []);
+    const start = () => {
+      interval = window.setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % words.length);
+      }, duration);
+    };
+
+    const stop = () => {
+      if (interval !== undefined) {
+        window.clearInterval(interval);
+        interval = undefined;
+      }
+    };
+
+    // Only run when tab is visible
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        start();
+      } else {
+        stop();
+      }
+    };
+
+    // Initial start if visible
+    if (typeof document !== "undefined") {
+      if (document.visibilityState === "visible") {
+        start();
+      }
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+    }
+
+    return () => {
+      stop();
+      if (typeof document !== "undefined") {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      }
+    };
+  }, [duration, words.length]);
 
   return (
     <>
@@ -33,7 +66,7 @@ export const LayoutTextFlip = ({
 
       <motion.span
         layout
-        className="relative inline-block w-fit overflow-hidden rounded-md border border-transparent bg-white px-2 py-0 font-sans text-lg font-medium tracking-tight text-black shadow-sm ring shadow-black/10 ring-black/10 drop-shadow-lg dark:bg-neutral-900 dark:text-white dark:shadow-sm dark:ring-1 dark:shadow-white/10 dark:ring-white/10 sm:-translate-y-0 md:-translate-y-1"
+        className="relative inline-block w-fit overflow-hidden rounded-md border border-transparent bg-white px-2 py-0 font-sans text-lg font-medium tracking-tight text-[#737373] shadow-sm ring shadow-black/10 ring-black/10 drop-shadow-lg dark:bg-neutral-900 dark:text-[#737373] dark:shadow-sm dark:ring-1 dark:shadow-white/10 dark:ring-white/10 sm:-translate-y-0 md:-translate-y-1"
       >
         <AnimatePresence mode="popLayout">
           <motion.span

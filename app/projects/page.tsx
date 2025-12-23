@@ -47,7 +47,7 @@ export default function Projects() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0A0A0A] transition-colors border-none outer-background">
-      <div className="border-gray-200 dark:border-[#2a2a2a] min-h-screen max-w-4xl mx-auto bg-white dark:bg-[#171717] shadow-sm border-r-[19px] border-l-[19px] md:border-r-[31px] md:border-l-[31px] relative" style={{ position: 'relative' }}>
+      <div className="border-[#f5f5f5] dark:border-[#1f1f1f] min-h-screen max-w-4xl mx-auto bg-white dark:bg-[#171717] shadow-sm border-r-[19px] border-l-[19px] md:border-r-[31px] md:border-l-[31px] relative" style={{ position: 'relative' }}>
         <DiagonalStripes />
 
         {/* Hero Section */}
@@ -56,7 +56,7 @@ export default function Projects() {
             <TextGenerateEffectTitle text="Projects" />
             <BlurText
               text="I'm a passionate software engineer dedicated to crafting elegant solutions for complex problems. With expertise in full-stack development, I enjoy building user-centric applications that make a difference."
-              className="text-xl text-gray-600 dark:text-gray-400 mb-6 leading-relaxed"
+              className="text-xl text-[#737373] dark:text-[#737373] mb-6 leading-relaxed"
               direction="bottom"
               animateBy="letters"
               delay={25}
@@ -64,7 +64,7 @@ export default function Projects() {
           </div>
           
           {/* Full width border line */}
-          <div className="border-b border-gray-100 dark:border-[#2a2a2a] mb-6 -mx-6"></div>
+          <div className="border-b border-[#f5f5f5] dark:border-[#1f1f1f] mb-6 -mx-6"></div>
 
           {/* Spacer to center projects between border lines */}
           <div className="mb-6"></div>
@@ -363,19 +363,19 @@ export default function Projects() {
         </section>
 
         {/* Footer */}
-        <footer className="max-w-4xl mx-auto px-6 py-8 border-t border-gray-100 dark:border-[#2a2a2a] bg-white dark:bg-[#171717]">
+        <footer className="max-w-4xl mx-auto px-6 py-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[#737373] dark:text-[#737373]">
               Built by Elijah Farrell
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="#" className="text-[#737373] hover:text-[#737373] dark:text-[#737373] dark:hover:text-gray-300 transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
             </div>

@@ -41,21 +41,32 @@ export function DiagonalStripes() {
   const backShade = shadeColor(backColor, 10)
   const foreShade = shadeColor(foreColor, 10)
   
+  const isDark = displayTheme === 'dark'
+  const lightGradient = 'linear-gradient(-45deg, #f5f5f5 10%, #ffffff 10%, #ffffff 50%, #f5f5f5 50%, #f5f5f5 60%, #ffffff 60%, #ffffff 100%)'
+  const darkGradient = 'linear-gradient(-45deg, #1f1f1f 10%, #171717 10%, #171717 50%, #1f1f1f 50%, #1f1f1f 60%, #171717 60%, #171717 100%)'
+  
   return (
     <>
-      {/* Left diagonal stripes */}
       <div 
-        className="absolute -left-[19px] md:-left-[31px] top-0 w-[19px] md:w-[31px] h-full border-l border-r overflow-hidden z-[70] diagonal-stripes-left"
+        className="absolute -left-[19px] md:-left-[31px] top-0 w-[19px] md:w-[31px] h-full border-l border-r overflow-hidden z-[70]"
         style={{
-          willChange: 'auto'
+          borderLeftColor: isDark ? '#1f1f1f' : '#f5f5f5',
+          borderRightColor: isDark ? '#1f1f1f' : '#f5f5f5',
+          backgroundImage: isDark ? darkGradient : lightGradient,
+          backgroundSize: '9.90px 9.90px',
+          boxShadow: isDark ? 'inset -2px 0 4px rgba(0, 0, 0, 0.15)' : 'inset -2px 0 4px rgba(0, 0, 0, 0.03)',
+          transition: 'none'
         }}
       />
-      
-      {/* Right diagonal stripes */}
       <div 
-        className="absolute -right-[19px] md:-right-[31px] top-0 w-[19px] md:w-[31px] h-full border-l border-r overflow-hidden z-[70] diagonal-stripes-right"
+        className="absolute -right-[19px] md:-right-[31px] top-0 w-[19px] md:w-[31px] h-full border-l border-r overflow-hidden z-[70]"
         style={{
-          willChange: 'auto'
+          borderLeftColor: isDark ? '#1f1f1f' : '#f5f5f5',
+          borderRightColor: isDark ? '#1f1f1f' : '#f5f5f5',
+          backgroundImage: isDark ? darkGradient : lightGradient,
+          backgroundSize: '9.90px 9.90px',
+          boxShadow: isDark ? 'inset 2px 0 4px rgba(0, 0, 0, 0.15)' : 'inset 2px 0 4px rgba(0, 0, 0, 0.03)',
+          transition: 'none'
         }}
       />
     </>
