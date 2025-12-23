@@ -183,7 +183,7 @@ export default function Portfolio() {
         {/* Experience Section */}
         <section className="max-w-4xl mx-auto px-6 pt-8 pb-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-fade-borders">
           <TextWithPillBadge words="Experience" asHeading={true} staggerDelay={0.15} />
-          <div className="space-y-8 sm:space-y-12 mb-10">
+          <div className="space-y-8 sm:space-y-12 mb-10 mt-6">
             {/* Google */}
             <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               <div className="flex-1 order-2 sm:order-1">

@@ -12,7 +12,7 @@ export function BlogSection() {
       <TextWithPillBadge words="Latest Thoughts" asHeading={true} staggerDelay={0.15} />
 
       {/* List: two most recent posts in simple stacked layout, both clickable */}
-      <div className="space-y-6 mb-10">
+      <div className="space-y-6 mb-10 mt-6">
         {/* Transitioning from Frontend to Full-Stack */}
         <Link href="/blog/transitioning-from-frontend-to-fullstack" className="group block">
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
