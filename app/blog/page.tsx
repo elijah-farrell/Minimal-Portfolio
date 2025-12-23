@@ -81,7 +81,7 @@ export default function BlogPage() {
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-20 pb-12">
           <div className="max-w-2xl">
-            <TextGenerateEffectTitle text="Blog" />
+            <TextGenerateEffectTitle text="All Blogs" />
             <BlurText
               text="Thoughts on design, development, and the intersection of technology and creativity."
               className="text-xl text-[#737373] dark:text-[#737373] mb-6 leading-relaxed"

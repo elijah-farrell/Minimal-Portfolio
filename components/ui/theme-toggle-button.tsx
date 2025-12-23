@@ -35,8 +35,8 @@ export const ThemeToggleButton = ({
         disabled
         aria-label="Toggle theme"
       >
-        <Sun className="h-[1.2rem] w-[1.2rem] dark:hidden" />
-        <Moon className="h-[1.2rem] w-[1.2rem] hidden dark:block" />
+        <Sun className="h-4 w-4 text-[#737373] dark:hidden" />
+        <Moon className="h-4 w-4 text-[#737373] hidden dark:block" />
         {showLabel && (
           <>
             <span className="text-sm dark:hidden">Light</span>
@@ -60,7 +60,7 @@ export const ThemeToggleButton = ({
       <span className="relative flex items-center justify-center">
         <Sun
           className={cn(
-            "h-[1.2rem] w-[1.2rem] transition-transform duration-300 origin-center",
+            "h-4 w-4 text-[#737373] transition-transform duration-300 origin-center",
             theme === "light"
               ? "rotate-0 scale-100"
               : "-rotate-90 scale-0"
@@ -68,7 +68,7 @@ export const ThemeToggleButton = ({
         />
         <Moon
           className={cn(
-            "h-[1.2rem] w-[1.2rem] absolute transition-transform duration-300 origin-center",
+            "h-4 w-4 text-[#737373] absolute transition-transform duration-300 origin-center",
             theme === "dark"
               ? "rotate-0 scale-100"
               : "rotate-90 scale-0"

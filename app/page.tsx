@@ -9,6 +9,7 @@ import { TestimonialsDemo } from "@/components/testimonials"
 import { BlogSection } from "@/components/blog-section"
 import { TextGenerateEffectTitle } from "@/components/ui/text-generate-effect-title"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
+import { TextWithPillBadge } from "@/components/ui/text-with-pill-badge"
 import BlurText from "@/components/ui/blur-text"
 import { LayoutTextFlip } from "@/components/ui/layout-text-flip"
 import { Mail, Github, Linkedin, Twitter } from "lucide-react"
@@ -85,7 +86,9 @@ export default function Portfolio() {
 
         {/* Project Cards Section */}
         <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-8 pb-10 border-t border-[#f5f5f5] dark:border-[#1f1f1f] section-with-inset-shadow section-fade-borders">
-          <TextGenerateEffect words="Stuff I Made" asHeading={true} staggerDelay={0.15} />
+          <div className="mb-4">
+            <TextWithPillBadge words="Stuff I Made" asHeading={true} staggerDelay={0.15} />
+          </div>
           {/* Project Cards - 3 Columns on Desktop, 1 on Mobile */}
           <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 items-center">
             <div 
@@ -179,7 +182,7 @@ export default function Portfolio() {
 
         {/* Experience Section */}
         <section className="max-w-4xl mx-auto px-6 pt-8 pb-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-fade-borders">
-          <TextGenerateEffect words="Experience" asHeading={true} staggerDelay={0.15} />
+          <TextWithPillBadge words="Experience" asHeading={true} staggerDelay={0.15} />
           <div className="space-y-8 sm:space-y-12 mb-10">
             {/* Google */}
             <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
@@ -381,7 +384,7 @@ export default function Portfolio() {
         {/* Testimonials Section */}
         <section className="pt-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
           <div className="max-w-4xl mx-auto px-6 mb-4">
-            <TextGenerateEffect words="People love my work" asHeading={true} staggerDelay={0.15} className="mb-0" />
+            <TextWithPillBadge words="People love my work" asHeading={true} staggerDelay={0.15} />
           </div>
           <div className="w-full">
             <TestimonialsDemo />

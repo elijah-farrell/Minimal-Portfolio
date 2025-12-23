@@ -3,6 +3,7 @@
 import { DiagonalStripes } from "@/components/diagonal-stripes"
 import { TextGenerateEffectTitle } from "@/components/ui/text-generate-effect-title"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
+import { TextWithPillBadge } from "@/components/ui/text-with-pill-badge"
 import BlurText from "@/components/ui/blur-text"
 import { Card as HeroCard, CardHeader } from "@heroui/react"
 import { Github, Linkedin, Twitter } from "lucide-react"
@@ -66,7 +67,7 @@ export default function Projects() {
 
         {/* Projects Section */}
         <section className="max-w-4xl mx-auto px-6 pt-8 pb-12 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
-          <TextGenerateEffect words="Stuff I Made" asHeading={true} staggerDelay={0.15} />
+          <TextWithPillBadge words="Stuff I Made" asHeading={true} staggerDelay={0.15} />
           {/* Project Cards - 3 Columns on Desktop, 1 on Mobile */}
           <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 mt-8">
             {/* Project 1 */}

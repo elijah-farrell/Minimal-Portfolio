@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { DiagonalStripes } from "@/components/diagonal-stripes"
 import { TextGenerateEffectTitle } from "@/components/ui/text-generate-effect-title"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
+import { TextWithPillBadge } from "@/components/ui/text-with-pill-badge"
 import BlurText from "@/components/ui/blur-text"
 import { Mail, Github, Linkedin, Twitter, FileDown } from "lucide-react"
 import { DraggableCardDemo } from "@/components/draggable-cards"
@@ -33,13 +34,13 @@ export default function AboutPage() {
 
          {/* Draggable Cards Section */}
          <section className="max-w-4xl mx-auto px-6 pt-8 pb-20 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
-           <TextGenerateEffect words="Moments" asHeading={true} staggerDelay={0.15} />
+           <TextWithPillBadge words="Moments" asHeading={true} staggerDelay={0.15} />
            <DraggableCardDemo />
          </section>
 
         {/* Timeline of Achievements */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-12 sm:pb-16 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
-          <TextGenerateEffect words="Timeline of Achievements" asHeading={true} staggerDelay={0.15} className="mb-8 sm:mb-12" />
+          <TextWithPillBadge words="Timeline of Achievements" asHeading={true} staggerDelay={0.15} className="mb-8 sm:mb-12" />
           
           <div className="space-y-8 sm:space-y-10">
             {/* 2025 */}
@@ -173,7 +174,7 @@ export default function AboutPage() {
         {/* Contact CTA */}
         <section className="max-w-4xl mx-auto px-6 pt-8 pb-12 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
           <div className="max-w-2xl mx-auto text-center">
-            <TextGenerateEffect words="Let's Work Together" asHeading={true} staggerDelay={0.15} className="mb-4" />
+            <TextWithPillBadge words="Let's Work Together" asHeading={true} staggerDelay={0.15} className="mb-4" />
             <p className="text-[#737373] dark:text-[#737373] mb-6 leading-relaxed">
               I'm always interested in new opportunities and collaborations. Whether you have a project in mind or just want to chat about design and development, I'd love to hear from you.
             </p>

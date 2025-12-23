@@ -3,13 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { TextWithPillBadge } from "@/components/ui/text-with-pill-badge";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 export function BlogSection() {
   return (
     <section className="max-w-4xl mx-auto px-6 pt-8 pb-10 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
-      <TextGenerateEffect words="Latest Thoughts" asHeading={true} staggerDelay={0.15} />
+      <TextWithPillBadge words="Latest Thoughts" asHeading={true} staggerDelay={0.15} />
 
       {/* List: two most recent posts in simple stacked layout, both clickable */}
       <div className="space-y-6 mb-10">

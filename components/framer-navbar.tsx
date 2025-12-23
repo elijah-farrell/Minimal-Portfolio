@@ -63,10 +63,21 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   const [animationsEnabled, setAnimationsEnabled] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Handle mounting state for SSR
   useEffect(() => {
     setIsMounted(true);
+    
+    // Check if screen is mobile (768px or less)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // Use useLayoutEffect to set initial state synchronously before paint
@@ -107,8 +118,8 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
     }
   });
 
-  // Calculate initial top position
-  const initialTop = visible ? "0.5rem" : "0rem";
+  // Calculate initial top position - no push down on mobile (768px and below)
+  const initialTop = (visible && !isMobile) ? "0.5rem" : "0rem";
 
   return (
     <motion.div
@@ -120,7 +131,8 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
       }}
       animate={{
         // Push down from top when visible (scrolled) - creates spacing from screen top
-        top: visible ? "0.5rem" : "0rem",
+        // Disabled on mobile (768px and below)
+        top: (visible && !isMobile) ? "0.5rem" : "0rem",
       }}
       transition={{
         duration: animationsEnabled && isInitialized ? 0.15 : 0,
