@@ -13,7 +13,8 @@ export const InfiniteMovingCards = ({
   items: {
     quote: string;
     name: string;
-    title: string;
+    title?: string;
+    image?: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -115,13 +116,8 @@ export const InfiniteMovingCards = ({
                     <div className="w-full h-full bg-gray-200 dark:bg-[#2a2a2a]"></div>
                   )}
                 </div>
-                <span className="flex flex-col gap-1">
-                  <span className="text-sm leading-[1.6] text-gray-900 dark:text-white font-normal">
-                    {item.name}
-                  </span>
-                  <span className="text-sm leading-[1.6] text-[#737373] dark:text-[#737373] font-normal">
-                    {item.title}
-                  </span>
+                <span className="text-sm leading-[1.6] text-gray-900 dark:text-white font-normal">
+                  {item.name}
                 </span>
               </div>
             </blockquote>
