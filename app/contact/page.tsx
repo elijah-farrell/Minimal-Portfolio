@@ -51,19 +51,19 @@ export default function ContactPage() {
               delay={25}
             />
           </div>
-          
-          {/* Full width border line */}
-          <div className="border-b border-[#f5f5f5] dark:border-[#1f1f1f] mb-6 -mx-6"></div>
+        </section>
 
+        {/* Contact Form Section */}
+        <section className="max-w-4xl mx-auto px-6 pt-8 pb-12 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
           <div className="max-w-2xl mx-auto">
-            <Card className="border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] shadow-sm">
+            <Card className="border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] shadow-sm relative z-10">
               <CardHeader>
                 <CardTitle className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Send me a message
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-sm font-medium text-[#737373] dark:text-[#737373]">
                       Full name
@@ -116,7 +116,7 @@ export default function ContactPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200"
+                    className="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200 cursor-pointer relative z-10"
                   >
                     <Send className="w-4 h-4 mr-2" />
                     Send message
@@ -128,18 +128,14 @@ export default function ContactPage() {
             {/* Alternative Contact Methods */}
             <div className="mt-12 text-center">
               <p className="text-sm text-[#737373] dark:text-[#737373] mb-4">
-                Prefer to reach out directly?
-              </p>
-              <Link href="#">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="border-[#f5f5f5] dark:border-[#1f1f1f] bg-transparent"
+                Prefer to reach out directly?{" "}
+                <Link 
+                  href="mailto:farrellelijah@outlook.com"
+                  className="text-gray-900 dark:text-white hover:underline transition-colors cursor-pointer"
                 >
-                  <Mail className="w-4 h-4 mr-2" />
-                  Send Email
-                </Button>
-              </Link>
+                  farrellelijah@outlook.com
+                </Link>
+              </p>
             </div>
           </div>
         </section>

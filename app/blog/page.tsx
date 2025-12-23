@@ -90,14 +90,11 @@ export default function BlogPage() {
               delay={25}
             />
           </div>
-          
-          {/* Full width border line */}
-          <div className="border-b border-[#f5f5f5] dark:border-[#1f1f1f] mb-6 -mx-6"></div>
         </section>
 
         {/* Blog Posts Section */}
-        <section className="max-w-4xl mx-auto px-6 pb-12">
-          <div className="space-y-8">
+        <section className="max-w-4xl mx-auto px-6 pt-0 pb-12 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
+          <div className="space-y-8 pt-8">
             {blogPosts.map((post, index) => (
               <motion.div
                 key={post.id}
@@ -171,13 +168,15 @@ export default function BlogPage() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 border border-[#f5f5f5] dark:border-[#1f1f1f] rounded-lg bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
+                className="flex-1 px-4 py-2 border border-[#f5f5f5] dark:border-[#1f1f1f] rounded-lg bg-white dark:bg-[#171717] text-gray-900 dark:text-white placeholder:text-[#737373] dark:placeholder:text-[#737373] focus:outline-none focus:border-gray-400 dark:focus:border-gray-500"
                 autoComplete="email"
                 name="email"
               />
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200">
-                Subscribe
-              </Button>
+              <Link href="#">
+                <Button className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200">
+                  Subscribe
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
