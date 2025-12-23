@@ -84,13 +84,13 @@ export default function Portfolio() {
         </section>
 
         {/* Project Cards Section */}
-        <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] section-with-inset-shadow">
+        <section className="max-w-4xl mx-auto px-6 bg-white dark:bg-[#171717] pt-8 pb-10 border-t border-[#f5f5f5] dark:border-[#1f1f1f] section-with-inset-shadow section-fade-borders">
           <TextGenerateEffect words="Stuff I Made" asHeading={true} staggerDelay={0.15} />
           {/* Project Cards - 3 Columns on Desktop, 1 on Mobile */}
-          <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 items-center mb-10">
+          <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 items-center">
             <div 
               ref={(el) => { cardRefs.current[0] = el }}
-              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
+              className={`transition-all duration-500 ease-out ${
                 visibleCards[0] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
@@ -119,7 +119,7 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[1] = el }}
-              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
+              className={`transition-all duration-500 ease-out ${
                 visibleCards[1] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
@@ -148,7 +148,7 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[2] = el }}
-              className={`transition-all duration-500 ease-out section-fade-borders section-fade-diagonal-left section-fade-diagonal-right ${
+              className={`transition-all duration-500 ease-out ${
                 visibleCards[2] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
@@ -178,7 +178,7 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section className="max-w-4xl mx-auto px-6 pt-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
+        <section className="max-w-4xl mx-auto px-6 pt-8 pb-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-fade-borders">
           <TextGenerateEffect words="Experience" asHeading={true} staggerDelay={0.15} />
           <div className="space-y-8 sm:space-y-12 mb-10">
             {/* Google */}

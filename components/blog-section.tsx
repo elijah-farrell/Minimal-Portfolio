@@ -8,7 +8,7 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 export function BlogSection() {
   return (
-    <section className="max-w-4xl mx-auto px-6 pt-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
+    <section className="max-w-4xl mx-auto px-6 pt-8 pb-10 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-with-inset-shadow">
       <TextGenerateEffect words="Latest Thoughts" asHeading={true} staggerDelay={0.15} />
 
       {/* List: two most recent posts in simple stacked layout, both clickable */}
@@ -63,7 +63,7 @@ export function BlogSection() {
       </div>
 
       {/* View All Posts Button */}
-      <div className="text-center mt-10 mb-10">
+      <div className="text-center mt-10">
         <button className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 mx-auto">
           View all posts
           <ArrowRight className="w-4 h-4" />
@@ -72,5 +72,7 @@ export function BlogSection() {
     </section>
   );
 }
+
+
 
 

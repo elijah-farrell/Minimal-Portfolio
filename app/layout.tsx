@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { GeistSans } from "geist/font/sans"
 import { ThemeProvider } from "@/components/theme-provider"
 import { PortfolioNavbar } from "@/components/navbar"
 import "./globals.css"
@@ -24,10 +25,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={GeistSans.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.bunny.net" />
-        <link href="https://fonts.bunny.net/css?family=satoshi:300,400,500,600,700" rel="stylesheet" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -44,7 +43,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body suppressHydrationWarning className="font-satoshi">
+      <body suppressHydrationWarning className="font-geist">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <PortfolioNavbar />
           {children}
