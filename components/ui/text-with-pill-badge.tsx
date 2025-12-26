@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { TextGenerateEffect } from "./text-generate-effect"
 import { PillBadge } from "./pill-badge"
 import { cn } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 
 interface TextWithPillBadgeProps {
   words: string
@@ -26,6 +27,7 @@ export const TextWithPillBadge = ({
   const [isInView, setIsInView] = useState(false)
   const [isAnimationComplete, setIsAnimationComplete] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLDivElement>(null)
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null)
   const wordsArray = words.split(" ")
   
@@ -73,16 +75,11 @@ export const TextWithPillBadge = ({
     }
   }, [totalAnimationTime])
 
-  const shouldShowBadge = showPillBadge && isInView && isAnimationComplete
+  const shouldShowBadge = siteConfig.textWithPillBadge && showPillBadge && isInView && isAnimationComplete
 
   return (
-    <div ref={containerRef} className={cn("inline-block", className)}>
-      <div className={cn(
-        "inline-block transition-all duration-300",
-        shouldShowBadge 
-          ? "bg-[#f5f5f5] dark:bg-[#1f1f1f] border border-[#e5e5e5] dark:border-[#2a2a2a] rounded-md shadow-sm px-3 py-1 relative" 
-          : ""
-      )}>
+    <div ref={containerRef} className={cn("inline-block relative", className)}>
+      <div ref={textRef} className="inline-block relative z-10">
         <TextGenerateEffect 
           words={words} 
           asHeading={asHeading} 
@@ -91,18 +88,27 @@ export const TextWithPillBadge = ({
           filter={filter}
           className={asHeading ? "mb-0" : ""}
         />
-        {shouldShowBadge && (
-          <>
-            {/* Top-left dot */}
-            <span className="absolute top-1 left-1 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
-            {/* Top-right dot */}
-            <span className="absolute top-1 right-1 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
-            {/* Bottom-left dot */}
-            <span className="absolute bottom-1 left-1 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
-            {/* Bottom-right dot */}
-            <span className="absolute bottom-1 right-1 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
-          </>
+      </div>
+      <div 
+        className={cn(
+          "absolute bg-[#f5f5f5] dark:bg-[#1f1f1f] border border-[#e5e5e5] dark:border-[#2a2a2a] rounded-md shadow-sm pointer-events-none transition-opacity duration-200",
+          shouldShowBadge ? "opacity-100" : "opacity-0"
         )}
+        style={{
+          top: '-4px',
+          left: '-6px',
+          right: '-6px',
+          bottom: '-4px',
+        }}
+      >
+        {/* Top-left dot */}
+        <span className="absolute top-0.5 left-0.5 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
+        {/* Top-right dot */}
+        <span className="absolute top-0.5 right-0.5 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
+        {/* Bottom-left dot */}
+        <span className="absolute bottom-0.5 left-0.5 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
+        {/* Bottom-right dot */}
+        <span className="absolute bottom-0.5 right-0.5 w-1 h-1 rounded-full bg-[#a0a0a0] dark:bg-[#5a5a5a]" />
       </div>
     </div>
   )

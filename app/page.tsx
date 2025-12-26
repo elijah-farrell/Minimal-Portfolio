@@ -8,7 +8,6 @@ import { DiagonalStripes } from "@/components/diagonal-stripes"
 import { TestimonialsDemo } from "@/components/testimonials"
 import { BlogSection } from "@/components/blog-section"
 import { TextGenerateEffectTitle } from "@/components/ui/text-generate-effect-title"
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import { TextWithPillBadge } from "@/components/ui/text-with-pill-badge"
 import BlurText from "@/components/ui/blur-text"
 import { LayoutTextFlip } from "@/components/ui/layout-text-flip"
@@ -181,7 +180,7 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section className="max-w-4xl mx-auto px-6 pt-8 pb-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717] section-fade-borders">
+        <section className="max-w-4xl mx-auto px-6 pt-8 pb-8 border-t border-[#f5f5f5] dark:border-[#1f1f1f] bg-white dark:bg-[#171717]">
           <TextWithPillBadge words="Experience" asHeading={true} staggerDelay={0.15} />
           <div className="space-y-8 sm:space-y-12 mb-10 mt-6">
             {/* Google */}

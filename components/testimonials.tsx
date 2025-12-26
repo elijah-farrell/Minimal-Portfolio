@@ -23,9 +23,8 @@ export function TestimonialsDemo() {
       <div className="max-w-4xl mx-auto px-6 w-full overflow-hidden">
         <InfiniteMovingCards
           items={testimonials}
-          direction="right"
-          speed="slow"
-          className="[--animation-duration:400s]"
+          direction="left"
+          className="[--animation-duration:70s]"
         />
       </div>
     </div>

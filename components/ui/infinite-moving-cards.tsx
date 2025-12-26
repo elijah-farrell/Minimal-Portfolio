@@ -24,14 +24,23 @@ export const InfiniteMovingCards = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
-  useEffect(() => {
-    addAnimation();
-  }, []);
   const [start, setStart] = useState(false);
-  function addAnimation() {
-    if (containerRef.current && scrollerRef.current) {
-      const scrollerContent = Array.from(scrollerRef.current.children);
+  
+  // Extract animation duration from className immediately
+  const animationDuration = React.useMemo(() => {
+    if (className) {
+      const match = className.match(/\[--animation-duration:([^\]]+)\]/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
+  }, [className]);
 
+  useEffect(() => {
+    if (containerRef.current && scrollerRef.current && !start) {
+      // Duplicate items for seamless loop
+      const scrollerContent = Array.from(scrollerRef.current.children);
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
         if (scrollerRef.current) {
@@ -40,10 +49,16 @@ export const InfiniteMovingCards = ({
       });
 
       getDirection();
-      getSpeed();
       setStart(true);
     }
-  }
+  }, [start]);
+
+  // Apply duration directly to ul element (where animate-scroll is applied)
+  useEffect(() => {
+    if (scrollerRef.current && animationDuration) {
+      scrollerRef.current.style.setProperty("--animation-duration", animationDuration);
+    }
+  }, [animationDuration]);
   const getDirection = () => {
     if (containerRef.current) {
       if (direction === "left") {
@@ -59,17 +74,6 @@ export const InfiniteMovingCards = ({
       }
     }
   };
-  const getSpeed = () => {
-    if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
-      }
-    }
-  };
   return (
     <div
       ref={containerRef}
@@ -82,9 +86,13 @@ export const InfiniteMovingCards = ({
         ref={scrollerRef}
         className={cn(
           " flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
-          start && "animate-scroll ",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
+        style={{
+          ...(start ? {
+            animation: `scroll ${animationDuration || '40s'} ${direction === "left" ? "forwards" : "reverse"} linear infinite`
+          } : {}),
+        } as React.CSSProperties}
       >
         {items.map((item, idx) => (
           <li
