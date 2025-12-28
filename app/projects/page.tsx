@@ -10,6 +10,91 @@ import { Github, Linkedin, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
+// Tech logo mapping
+const techLogos: Record<string, string> = {
+  React: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+  TypeScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+  "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+  "C#": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  Azure: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg",
+  JavaScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+  CSS: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+  HTML: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+}
+
+// Tech logo component
+const TechLogo = ({ tech }: { tech: string }) => {
+  const logoUrl = techLogos[tech]
+  const textRef = useRef<HTMLSpanElement>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  if (!logoUrl) return null
+  
+  const expandLogo = (element: HTMLDivElement) => {
+    if (textRef.current) {
+      const textWidth = textRef.current.offsetWidth
+      const logoWidth = 20 // w-5 = 20px
+      const padding = 8 + 8 // pl-2 + pr-2 = 16px
+      const gap = 6 // ml-1.5 = 6px
+      element.style.width = `${logoWidth + gap + textWidth + padding}px`
+      element.style.paddingLeft = '0.5rem'
+      element.style.paddingRight = '0.5rem'
+    }
+  }
+  
+  const collapseLogo = (element: HTMLDivElement) => {
+    element.style.width = '1.75rem'
+    element.style.paddingLeft = '0'
+    element.style.paddingRight = '0'
+  }
+  
+  return (
+    <div 
+      ref={containerRef}
+      className="group relative h-7 rounded-full bg-gray-100 dark:bg-[#2a2a2a] hover:bg-gray-200 dark:hover:bg-[#3a3a3a] md:hover:bg-gray-200 md:dark:hover:bg-[#3a3a3a] transition-all duration-500 ease-in-out border border-transparent dark:hover:border-gray-600 md:hover:border-gray-600 overflow-hidden"
+      style={{
+        width: isExpanded ? undefined : '1.75rem', // w-7 = 28px
+        backgroundColor: isExpanded ? 'rgb(229 231 235)' : undefined,
+      }}
+      onMouseEnter={(e) => {
+        if (window.innerWidth >= 1024 && containerRef.current) {
+          expandLogo(containerRef.current)
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (window.innerWidth >= 1024 && containerRef.current) {
+          collapseLogo(containerRef.current)
+        }
+      }}
+      onClick={(e) => {
+        if (window.innerWidth < 1024 && containerRef.current) {
+          if (isExpanded) {
+            collapseLogo(containerRef.current)
+            setIsExpanded(false)
+          } else {
+            expandLogo(containerRef.current)
+            setIsExpanded(true)
+          }
+        }
+      }}
+    >
+      <div className="absolute left-3.5 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
+        <img 
+          src={logoUrl} 
+          alt={tech}
+          className="w-full h-full object-contain"
+        />
+      </div>
+      <div className="absolute left-7 top-1/2 -translate-y-1/2 flex items-center">
+        <span ref={textRef} className="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap pointer-events-none">
+          {tech}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export default function Projects() {
   const [visibleCards, setVisibleCards] = useState<boolean[]>(new Array(9).fill(false))
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -71,7 +156,7 @@ export default function Projects() {
           {/* Project Cards - 3 Columns on Desktop, 1 on Mobile */}
           <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 mt-8">
             {/* Project 1 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[0] = el }}
                 className={`transition-all duration-500 ease-out ${
@@ -96,14 +181,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="TypeScript" />
+                  <TechLogo tech="Node.js" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
             
             {/* Project 2 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[1] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -128,14 +218,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A sleek iOS interface design focused on user experience and accessibility</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A sleek iOS interface design focused on user experience and accessibility</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="JavaScript" />
+                  <TechLogo tech="CSS" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
             
             {/* Project 3 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[2] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -160,14 +255,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A minimalist portfolio showcasing creative work with smooth animations</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A minimalist portfolio showcasing creative work with smooth animations</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="TypeScript" />
+                  <TechLogo tech="HTML" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 4 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[3] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -192,14 +292,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A modern e-commerce platform with seamless checkout and product discovery</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A modern e-commerce platform with seamless checkout and product discovery</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="Node.js" />
+                  <TechLogo tech="TypeScript" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 5 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[4] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -224,14 +329,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">An advanced analytics tool with interactive charts and business intelligence features</p>
+                <p className="text-white text-sm leading-relaxed mb-3">An advanced analytics tool with interactive charts and business intelligence features</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="TypeScript" />
+                  <TechLogo tech="React" />
+                  <TechLogo tech="Azure" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 6 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[5] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -256,14 +366,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A comprehensive fitness tracker with workout plans and progress monitoring</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A comprehensive fitness tracker with workout plans and progress monitoring</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="JavaScript" />
+                  <TechLogo tech="CSS" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 7 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[6] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -288,14 +403,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A beautifully designed web app with clean UI and smooth user interactions</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A beautifully designed web app with clean UI and smooth user interactions</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="TypeScript" />
+                  <TechLogo tech="CSS" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 8 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[7] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -320,14 +440,19 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A powerful task management system with team collaboration and project tracking</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A powerful task management system with team collaboration and project tracking</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="Node.js" />
+                  <TechLogo tech="TypeScript" />
+                </div>
               </div>
               </HeroCard>
               </div>
             </a>
 
             {/* Project 9 */}
-            <a href="#" className="block">
+            <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[8] = el }}
                 className={`transition-all duration-800 ease-out ${
@@ -352,7 +477,12 @@ export default function Projects() {
               
               {/* Description card - always visible on mobile, hover on desktop */}
               <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                <p className="text-white text-sm leading-relaxed">A modern social media app with real-time messaging and content sharing</p>
+                <p className="text-white text-sm leading-relaxed mb-3">A modern social media app with real-time messaging and content sharing</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <TechLogo tech="React" />
+                  <TechLogo tech="Node.js" />
+                  <TechLogo tech="JavaScript" />
+                </div>
               </div>
               </HeroCard>
               </div>

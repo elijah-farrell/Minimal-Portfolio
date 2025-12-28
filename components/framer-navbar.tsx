@@ -18,6 +18,7 @@ interface NavBodyProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  scrollProgress?: number;
   animationsEnabled?: boolean;
 }
 
@@ -59,11 +60,15 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
   const { scrollY } = useScroll();
   
   // Initialize with SSR-safe default - always start transparent
-  const [visible, setVisible] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [animationsEnabled, setAnimationsEnabled] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  // Scroll range for gradual animation (0px to 100px)
+  const SCROLL_START = 0;
+  const SCROLL_END = 100;
 
   // Handle mounting state for SSR
   useEffect(() => {
@@ -85,14 +90,13 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
     if (!isInitialized && isMounted) {
       setIsInitialized(true);
       
-      // Always start with transparent navbar on new page load
-      // Only show navbar if we're actually scrolled down on the current page
+      // Calculate initial scroll progress
       const initialScrollY = window.scrollY;
-      const shouldBeVisible = initialScrollY > 10;
-      setVisible(shouldBeVisible);
+      const initialProgress = Math.min(Math.max((initialScrollY - SCROLL_START) / (SCROLL_END - SCROLL_START), 0), 1);
+      setScrollProgress(initialProgress);
       
       // If we're scrolled down, enable animations immediately
-      if (shouldBeVisible) {
+      if (initialProgress > 0) {
         setAnimationsEnabled(true);
       }
       
@@ -107,19 +111,21 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
     // Only handle scroll events after component is mounted
     if (!isMounted) return;
     
-    if (latest > 10) {
-      setVisible(true); // Visible (with background) when scrolled
-    } else {
-      setVisible(false); // Transparent at top
-    }
+    // Calculate scroll progress (0 to 1) based on scroll position
+    const progress = Math.min(Math.max((latest - SCROLL_START) / (SCROLL_END - SCROLL_START), 0), 1);
+    setScrollProgress(progress);
+    
     // Enable animations after first scroll interaction
     if (!animationsEnabled) {
       setAnimationsEnabled(true);
     }
   });
 
+  // Convert progress to visible state for backward compatibility
+  const visible = scrollProgress > 0;
+
   // Calculate initial top position - no push down on mobile (768px and below)
-  const initialTop = (visible && !isMobile) ? "0.5rem" : "0rem";
+  const initialTop = (scrollProgress > 0 && !isMobile) ? `${0.5 * scrollProgress}rem` : "0rem";
 
   return (
     <motion.div
@@ -130,21 +136,22 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
         top: initialTop,
       }}
       animate={{
-        // Push down from top when visible (scrolled) - creates spacing from screen top
+        // Push down from top gradually based on scroll progress
         // Disabled on mobile (768px and below)
-        top: (visible && !isMobile) ? "0.5rem" : "0rem",
+        top: (!isMobile) ? `${0.5 * scrollProgress}rem` : "0rem",
       }}
       transition={{
-        duration: animationsEnabled && isInitialized ? 0.15 : 0,
+        duration: animationsEnabled && isInitialized ? 0.3 : 0,
         ease: "easeOut",
       }}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
-              child as React.ReactElement<{ visible?: boolean; animationsEnabled?: boolean }>,
+              child as React.ReactElement<{ visible?: boolean; scrollProgress?: number; animationsEnabled?: boolean }>,
               { 
                 visible: isMounted ? visible : false, // Always start transparent during SSR
+                scrollProgress: isMounted ? scrollProgress : 0,
                 animationsEnabled: isMounted ? animationsEnabled : false 
               },
             )
@@ -156,21 +163,29 @@ export const Navbar = React.memo(({ children, className, ref: externalRef }: Nav
 
 Navbar.displayName = 'Navbar';
 
-export const NavBody = React.memo(({ children, className, visible, animationsEnabled = false }: NavBodyProps) => {
+export const NavBody = React.memo(({ children, className, visible, scrollProgress = 0, animationsEnabled = false }: NavBodyProps) => {
   const [isInitialized, setIsInitialized] = useState(false);
   
   useLayoutEffect(() => {
     setIsInitialized(true);
   }, []);
 
+  // Calculate gradual values based on scroll progress
+  const blurAmount = scrollProgress * 8; // 0 to 8px blur
+  const leftMargin = 3 + (scrollProgress * 2); // 3% to 5%
+  const rightMargin = 3 + (scrollProgress * 2); // 3% to 5%
+  const shadowOpacity = scrollProgress * 0.15;
+  const shadowOpacity2 = scrollProgress * 0.1;
+  const paddingAmount = scrollProgress * 0.5; // 0 to 0.5rem
+
   // Calculate the exact initial state to prevent any animation
-  const initialLeft = visible ? "5%" : "3%";
-  const initialRight = visible ? "5%" : "3%";
-  const initialPaddingLeft = visible ? "0.5rem" : "0rem";
-  const initialPaddingRight = visible ? "0.5rem" : "0rem";
-  const initialBackdropFilter = visible ? "blur(8px)" : "none";
-  const initialBoxShadow = visible 
-    ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
+  const initialLeft = `${leftMargin}%`;
+  const initialRight = `${rightMargin}%`;
+  const initialPaddingLeft = `${paddingAmount}rem`;
+  const initialPaddingRight = `${paddingAmount}rem`;
+  const initialBackdropFilter = scrollProgress > 0 ? `blur(${blurAmount}px)` : "none";
+  const initialBoxShadow = scrollProgress > 0
+    ? `0 4px 12px rgba(0, 0, 0, ${shadowOpacity}), 0 2px 4px rgba(0, 0, 0, ${shadowOpacity2})`
     : "none";
 
   return (
@@ -184,22 +199,59 @@ export const NavBody = React.memo(({ children, className, visible, animationsEna
           right: initialRight,
         }}
         animate={{
-          backdropFilter: visible ? "blur(8px)" : "none",
-          boxShadow: visible
-            ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
+          backdropFilter: scrollProgress > 0 ? `blur(${blurAmount}px)` : "none",
+          boxShadow: scrollProgress > 0
+            ? `0 4px 12px rgba(0, 0, 0, ${shadowOpacity}), 0 2px 4px rgba(0, 0, 0, ${shadowOpacity2})`
             : "none",
-          // Add responsive width animation - slide inward on larger screens
-          left: visible ? "5%" : "3%",
-          right: visible ? "5%" : "3%",
+          // Add responsive width animation - slide inward gradually based on scroll
+          left: `${leftMargin}%`,
+          right: `${rightMargin}%`,
         }}
         transition={{
-          duration: animationsEnabled && isInitialized ? 0.15 : 0,
+          duration: animationsEnabled && isInitialized ? 0.3 : 0,
           ease: "easeOut",
         }}
         className={cn(
-          "absolute top-0 bottom-0 rounded-full overflow-hidden",
-          visible ? "bg-white/95 dark:bg-[#171717]/90 border border-white/30 dark:border-[#2a2a2a]/20" : "bg-transparent",
+          "absolute top-0 bottom-0 rounded-full overflow-hidden dark:hidden",
+          scrollProgress > 0 ? "border border-white/30" : "",
         )}
+        style={{
+          ...(scrollProgress > 0 ? {
+            backgroundColor: `rgba(255, 255, 255, ${scrollProgress * 0.95})`,
+          } : {
+            backgroundColor: "transparent",
+          }),
+        }}
+      />
+      <motion.div
+        initial={{
+          backdropFilter: initialBackdropFilter,
+          boxShadow: initialBoxShadow,
+          left: initialLeft,
+          right: initialRight,
+        }}
+        animate={{
+          backdropFilter: scrollProgress > 0 ? `blur(${blurAmount}px)` : "none",
+          boxShadow: scrollProgress > 0
+            ? `0 4px 12px rgba(0, 0, 0, ${shadowOpacity}), 0 2px 4px rgba(0, 0, 0, ${shadowOpacity2})`
+            : "none",
+          left: `${leftMargin}%`,
+          right: `${rightMargin}%`,
+        }}
+        transition={{
+          duration: animationsEnabled && isInitialized ? 0.3 : 0,
+          ease: "easeOut",
+        }}
+        className="absolute top-0 bottom-0 rounded-full overflow-hidden hidden dark:block"
+        style={{
+          ...(scrollProgress > 0 ? {
+            backgroundColor: `rgba(23, 23, 23, ${scrollProgress * 0.9})`,
+            border: `1px solid rgba(42, 42, 42, ${scrollProgress * 0.2})`,
+          } : {
+            backgroundColor: "transparent",
+            border: "none",
+          }),
+        }}
       />
       {/* Content container with original layout - always visible */}
       <motion.div 
@@ -208,13 +260,13 @@ export const NavBody = React.memo(({ children, className, visible, animationsEna
           className,
         )}
         initial={{
-          paddingLeft: initialPaddingLeft,
-          paddingRight: initialPaddingRight,
+          paddingLeft: `${scrollProgress * 0.5}rem`,
+          paddingRight: `${scrollProgress * 0.5}rem`,
         }}
         animate={{
           // Move nav items inward slightly when navbar background is visible
-          paddingLeft: visible ? "0.5rem" : "0rem",
-          paddingRight: visible ? "0.5rem" : "0rem",
+          paddingLeft: `${scrollProgress * 0.5}rem`,
+          paddingRight: `${scrollProgress * 0.5}rem`,
         }}
         transition={{
           duration: animationsEnabled && isInitialized ? 0.15 : 0,

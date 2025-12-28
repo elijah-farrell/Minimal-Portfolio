@@ -16,6 +16,97 @@ import { Card as HeroCard, CardHeader} from "@heroui/react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
+// Tech logo mapping
+const techLogos: Record<string, string> = {
+  React: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+  TypeScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+  "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+  "C#": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  Azure: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg",
+  JavaScript: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+  CSS: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+  HTML: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+  Sass: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg",
+  jQuery: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg",
+}
+
+// Tech logo component
+const TechLogo = ({ tech }: { tech: string }) => {
+  const logoUrl = techLogos[tech]
+  const textRef = useRef<HTMLSpanElement>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  if (!logoUrl) return null
+  
+  const expandLogo = (element: HTMLDivElement) => {
+    if (textRef.current) {
+      const textWidth = textRef.current.offsetWidth
+      const logoWidth = 16 // w-4 = 16px
+      const padding = 8 + 8 // pl-2 + pr-2 = 16px
+      const gap = 6 // ml-1.5 = 6px
+      element.style.width = `${logoWidth + gap + textWidth + padding}px`
+      element.style.paddingLeft = '0.5rem'
+      element.style.paddingRight = '0.5rem'
+    }
+  }
+  
+  const collapseLogo = (element: HTMLDivElement) => {
+    element.style.width = '1.75rem'
+    element.style.paddingLeft = '0'
+    element.style.paddingRight = '0'
+  }
+  
+  const isActuallyExpanded = isExpanded || isHovered
+  
+  return (
+    <div 
+      ref={containerRef}
+      className="group relative h-7 rounded-full bg-gray-100 dark:bg-[#2a2a2a] hover:bg-gray-200 dark:hover:bg-[#3a3a3a] md:hover:bg-gray-200 md:dark:hover:bg-[#3a3a3a] transition-all duration-500 ease-in-out border border-transparent dark:hover:border-gray-600 md:hover:border-gray-600 overflow-hidden"
+      style={{
+        width: isActuallyExpanded ? undefined : '1.75rem', // w-7 = 28px
+      }}
+      onMouseEnter={(e) => {
+        if (window.innerWidth >= 1024 && containerRef.current) {
+          setIsHovered(true)
+          expandLogo(containerRef.current)
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (window.innerWidth >= 1024 && containerRef.current) {
+          setIsHovered(false)
+          collapseLogo(containerRef.current)
+        }
+      }}
+      onClick={(e) => {
+        if (window.innerWidth < 1024 && containerRef.current) {
+          if (isExpanded) {
+            collapseLogo(containerRef.current)
+            setIsExpanded(false)
+          } else {
+            expandLogo(containerRef.current)
+            setIsExpanded(true)
+          }
+        }
+      }}
+    >
+      <div className="absolute top-1/2 w-4 h-4 flex items-center justify-center -translate-x-1/2 -translate-y-1/2" style={{ left: '13.5px' }}>
+        <img 
+          src={logoUrl} 
+          alt={tech}
+          className="w-full h-full object-contain"
+        />
+      </div>
+      <div className="absolute left-7 top-1/2 -translate-y-1/2 flex items-center">
+        <span ref={textRef} className="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap pointer-events-none">
+          {tech}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export default function Portfolio() {
   const [visibleCards, setVisibleCards] = useState<boolean[]>(new Array(3).fill(false))
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -98,7 +189,7 @@ export default function Portfolio() {
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                   <h4 className="text-white font-semibold text-xl">Modern Dashboard</h4>
@@ -114,7 +205,12 @@ export default function Portfolio() {
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                  <p className="text-white text-sm leading-relaxed">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
+                  <p className="text-white text-sm leading-relaxed mb-3">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <TechLogo tech="React" />
+                    <TechLogo tech="TypeScript" />
+                    <TechLogo tech="Node.js" />
+                  </div>
                 </div>
               </HeroCard>
             </div>
@@ -127,7 +223,7 @@ export default function Portfolio() {
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Mobile App</p>
                   <h4 className="text-white font-semibold text-xl">iOS Interface</h4>
@@ -143,7 +239,12 @@ export default function Portfolio() {
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                  <p className="text-white text-sm leading-relaxed">A sleek iOS interface design focused on user experience and accessibility</p>
+                  <p className="text-white text-sm leading-relaxed mb-3">A sleek iOS interface design focused on user experience and accessibility</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <TechLogo tech="React" />
+                    <TechLogo tech="JavaScript" />
+                    <TechLogo tech="CSS" />
+                  </div>
                 </div>
               </HeroCard>
             </div>
@@ -156,7 +257,7 @@ export default function Portfolio() {
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                   <h4 className="text-white font-semibold text-xl">Portfolio Site</h4>
@@ -171,7 +272,12 @@ export default function Portfolio() {
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
-                  <p className="text-white text-sm leading-relaxed">A minimalist portfolio showcasing creative work with smooth animations</p>
+                  <p className="text-white text-sm leading-relaxed mb-3">A minimalist portfolio showcasing creative work with smooth animations</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <TechLogo tech="React" />
+                    <TechLogo tech="TypeScript" />
+                    <TechLogo tech="HTML" />
+                  </div>
                 </div>
               </HeroCard>
             </div>
@@ -197,24 +303,9 @@ export default function Portfolio() {
                   and user experience.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    React
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    TypeScript
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    Node.js
-                  </Badge>
+                  <TechLogo tech="React" />
+                  <TechLogo tech="TypeScript" />
+                  <TechLogo tech="Node.js" />
                 </div>
               </div>
               <div className="hidden md:flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -236,24 +327,9 @@ export default function Portfolio() {
                   user experience.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    C#
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    Azure
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    React
-                  </Badge>
+                  <TechLogo tech="C#" />
+                  <TechLogo tech="Azure" />
+                  <TechLogo tech="React" />
                 </div>
               </div>
               <div className="hidden md:flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -274,24 +350,9 @@ export default function Portfolio() {
                   Implemented user-facing web development of Airbnb's booking platform.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    JavaScript
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    React
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    CSS
-                  </Badge>
+                  <TechLogo tech="JavaScript" />
+                  <TechLogo tech="React" />
+                  <TechLogo tech="CSS" />
                 </div>
               </div>
               <div className="hidden md:flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -312,24 +373,9 @@ export default function Portfolio() {
                   Developed and maintained Shopify themes for enterprise clients with advanced technical requirements.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    Liquid
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    JavaScript
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    Shopify
-                  </Badge>
+                  <TechLogo tech="HTML" />
+                  <TechLogo tech="CSS" />
+                  <TechLogo tech="JavaScript" />
                 </div>
               </div>
                <div className="hidden md:flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -350,24 +396,9 @@ export default function Portfolio() {
                   Consulted on the design and development of Adobe's Creative Cloud web applications.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border-transparent dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    JavaScript
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border透明 dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    CSS
-                  </Badge>
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-gray-100 dark:bg-[#2a2a2a] text-gray-600 dark:text-white hover:bg-gray-200 hover:text-gray-800 hover:border-gray-300 hover:shadow-md hover:shadow-gray-500/20 hover:scale-105 transition-all duration-300 ease-out border border透明 dark:hover:bg-[#3a3a3a] dark:hover:text-gray-200 dark:hover:border-gray-600 dark:hover:shadow-gray-400/20"
-                  >
-                    HTML
-                  </Badge>
+                  <TechLogo tech="JavaScript" />
+                  <TechLogo tech="CSS" />
+                  <TechLogo tech="HTML" />
                 </div>
               </div>
                <div className="hidden md:flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
