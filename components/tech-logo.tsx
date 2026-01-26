@@ -151,7 +151,7 @@ export const TechLogo = ({ tech }: { tech: string }) => {
   return (
     <div 
       ref={containerRef}
-      className={`group relative inline-flex h-8 min-w-8 items-center rounded-full bg-gray-100 dark:bg-[#2a2a2a] border border-transparent overflow-hidden select-none transition-[max-width,background-color,border-color] ease-in-out cursor-pointer lg:cursor-default px-2 justify-start ${isOpen ? "max-w-[240px] bg-gray-200 dark:bg-[#3a3a3a] dark:border-gray-600 duration-[1500ms]" : "max-w-8 duration-[900ms]"}`}
+      className={`group relative inline-flex h-8 min-w-8 items-center rounded-full bg-gray-100 dark:bg-[#2a2a2a] border border-transparent overflow-hidden select-none transition-[max-width,background-color,border-color] ease-in-out cursor-pointer lg:cursor-default pl-8 ${isOpen ? "max-w-[240px] bg-gray-200 dark:bg-[#3a3a3a] dark:border-gray-600 duration-[1500ms]" : "max-w-8 duration-[900ms]"}`}
       style={{
         WebkitTapHighlightColor: 'transparent',
         touchAction: 'manipulation',
@@ -161,14 +161,17 @@ export const TechLogo = ({ tech }: { tech: string }) => {
       onPointerDown={handlePointerDown}
       onClick={handleClick}
     >
-      <img 
-        src={logoUrl} 
-        alt={tech}
-        className="h-4 w-4 min-h-4 min-w-4 flex-none object-contain pointer-events-none"
-        draggable={false}
-      />
+      <div className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center">
+        <img 
+          src={logoUrl} 
+          alt={tech}
+          className="block h-4 w-4 min-h-4 min-w-4 object-contain object-center pointer-events-none"
+          draggable={false}
+        />
+      </div>
       <span 
-        className="inline-block min-w-0 max-w-[200px] pl-2 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap"
+        className={`inline-block overflow-hidden text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap transition-[max-width] ease-in-out pr-2 ${isOpen ? "max-w-[200px]" : "max-w-0"}`}
+        style={{ transitionDuration: isOpen ? "1500ms" : "900ms" }}
       >
         {tech}
       </span>
