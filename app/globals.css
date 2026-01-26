@@ -109,3 +109,19 @@
 
 html.instant-theme *, html.instant-theme *::before, html.instant-theme *::after { transition-duration: 0s !important; }
 html.instant-theme .theme-toggle-button, html.instant-theme .theme-toggle-button * { transition-duration: 200ms !important; }
+
+.project-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .project-info {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  .project-card:hover .project-info {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

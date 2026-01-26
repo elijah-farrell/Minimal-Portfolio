@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 
 // Tech logo mapping
 const techLogos: Record<string, string> = {
@@ -19,202 +19,159 @@ const techLogos: Record<string, string> = {
 // Tech logo component
 export const TechLogo = ({ tech }: { tech: string }) => {
   const logoUrl = techLogos[tech]
-  const textRef = useRef<HTMLSpanElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const [isClicked, setIsClicked] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [hasTouch, setHasTouch] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const touchHandledRef = useRef(false)
+  const expandedByClickRef = useRef(false)
+  const touchStartTimeRef = useRef(0)
   
-  // Detect mobile and touch on mount and resize
+  // Detect mobile and touch capabilities
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(typeof window !== 'undefined' && window.innerWidth < 1024)
+    const checkDevice = () => {
+      if (typeof window === 'undefined') return
+      setIsMobile(window.innerWidth < 1024)
       setHasTouch('ontouchstart' in window || navigator.maxTouchPoints > 0)
     }
     
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    checkDevice()
+    window.addEventListener('resize', checkDevice)
+    return () => window.removeEventListener('resize', checkDevice)
   }, [])
   
   if (!logoUrl) return null
+
+  const isOpen = isExpanded || isHovered
   
-  const expandLogo = (element: HTMLDivElement) => {
-    // Same as hover - simple expansion
-    // Use requestAnimationFrame to ensure text is visible
-    requestAnimationFrame(() => {
-      if (textRef.current) {
-        const textWidth = textRef.current.offsetWidth || textRef.current.scrollWidth || 50
-        const totalWidth = 16 + 6 + textWidth + 16 // logo + gap + text + padding
-        element.style.width = `${totalWidth}px`
-      }
-      element.style.paddingLeft = '0.5rem'
-      element.style.paddingRight = '0.5rem'
+  // Handle mobile/touch click
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.stopPropagation()
+    
+    // Only handle on mobile/touch devices
+    if (!isMobile && !hasTouch) return
+    
+    // Prevent default to avoid text selection
+    e.preventDefault()
+    
+    // Track touch start time to distinguish from click
+    touchStartTimeRef.current = Date.now()
+    
+    // Toggle expanded state
+    setIsExpanded(prev => {
+      const newState = !prev
+      expandedByClickRef.current = newState
+      return newState
     })
-  }
+  }, [isMobile, hasTouch])
+
+  // Handle desktop hover
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (isMobile || hasTouch) return
+    setIsHovered(true)
+  }, [isMobile, hasTouch])
+
+  const handleMouseLeave = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (isMobile || hasTouch) return
+    setIsHovered(false)
+  }, [isMobile, hasTouch])
   
-  const collapseLogo = (element: HTMLDivElement) => {
-    element.style.width = '1.75rem'
-    element.style.paddingLeft = '0'
-    element.style.paddingRight = '0'
-  }
-  
-  const isExpanded = isHovered || isClicked
+  // Handle click (fallback for devices that fire both touch and click)
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    
+    // Only handle on mobile/touch devices
+    if (!isMobile && !hasTouch) return
+    
+    // If this click happened very soon after touch, ignore it (already handled)
+    const timeSinceTouch = Date.now() - touchStartTimeRef.current
+    if (timeSinceTouch < 300) return
+    
+    // Toggle expanded state
+    setIsExpanded(prev => {
+      const newState = !prev
+      expandedByClickRef.current = newState
+      return newState
+    })
+  }, [isMobile, hasTouch])
   
   // Handle clicks outside to collapse on mobile
   useEffect(() => {
-    if (!isClicked) return
+    if (!isExpanded || !expandedByClickRef.current) return
     
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      // Only handle on mobile
-      if (!isMobile || !containerRef.current) return
+      if (!containerRef.current) return
       
-      // Check if click is outside the container
       const target = event.target as Node
-      if (containerRef.current && !containerRef.current.contains(target)) {
-        // Use setTimeout to avoid conflicts with the click handler
-        setTimeout(() => {
-          if (containerRef.current && isClicked) {
-            collapseLogo(containerRef.current)
-            setIsClicked(false)
-          }
-        }, 10)
+      if (!containerRef.current.contains(target)) {
+        setIsExpanded(false)
+        expandedByClickRef.current = false
       }
     }
     
-    // Add event listeners with delay to avoid immediate firing
+    // Small delay to avoid immediate firing from the same click that expanded it
     const timeoutId = setTimeout(() => {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('touchstart', handleClickOutside)
-    }, 200)
+      document.addEventListener('mousedown', handleClickOutside, true)
+      document.addEventListener('touchstart', handleClickOutside, true)
+    }, 100)
     
     return () => {
       clearTimeout(timeoutId)
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('touchstart', handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside, true)
+      document.removeEventListener('touchstart', handleClickOutside, true)
     }
-  }, [isClicked, isMobile])
+  }, [isExpanded])
   
-  const toggleMobile = () => {
-    if (!containerRef.current) return
+  // Reset state when switching between mobile and desktop modes
+  const prevIsMobileRef = useRef(isMobile)
+  const prevHasTouchRef = useRef(hasTouch)
+  
+  useEffect(() => {
+    // Only reset if device type actually changed
+    const deviceChanged = 
+      prevIsMobileRef.current !== isMobile || 
+      prevHasTouchRef.current !== hasTouch
     
-    // If hover expanded it, collapse first and clear hover
-    if (isHovered) {
-      collapseLogo(containerRef.current)
+    if (deviceChanged && isExpanded) {
+      setIsExpanded(false)
+      expandedByClickRef.current = false
+    }
+    
+    if (deviceChanged && isHovered) {
       setIsHovered(false)
     }
     
-    // Use functional update to get current state
-    setIsClicked(prev => {
-      if (prev) {
-        // Currently clicked, so collapse
-        collapseLogo(containerRef.current!)
-        return false
-      } else {
-        // Not clicked, so expand
-        expandLogo(containerRef.current!)
-        return true
-      }
-    })
-  }
-  
-  const handleClick = (e: React.MouseEvent) => {
-    // Always stop propagation to prevent parent clicks
-    e.stopPropagation()
-    e.preventDefault()
-    
-    if (!isMobile) return
-    
-    // If touch was just handled, ignore click (prevent double-firing)
-    if (touchHandledRef.current) {
-      touchHandledRef.current = false
-      return
-    }
-    
-    toggleMobile()
-  }
-  
-  const handleTouchStart = (e: React.TouchEvent) => {
-    // Always stop propagation to prevent parent clicks
-    e.stopPropagation()
-    e.preventDefault()
-    
-    if (!isMobile) return
-    
-    touchHandledRef.current = true
-    toggleMobile()
-    
-    // Reset after delay to allow click event to be ignored
-    setTimeout(() => {
-      touchHandledRef.current = false
-    }, 300)
-  }
+    prevIsMobileRef.current = isMobile
+    prevHasTouchRef.current = hasTouch
+  }, [isMobile, hasTouch, isExpanded, isHovered])
   
   return (
     <div 
       ref={containerRef}
-      className="group relative h-7 rounded-full bg-gray-100 dark:bg-[#2a2a2a] transition-all duration-500 ease-in-out border border-transparent overflow-hidden hover:bg-gray-200 dark:hover:bg-[#3a3a3a] md:hover:bg-gray-200 md:dark:hover:bg-[#3a3a3a] dark:hover:border-gray-600 md:hover:border-gray-600 cursor-pointer md:cursor-default select-none"
+      className={`group relative inline-flex h-8 min-w-8 items-center rounded-full bg-gray-100 dark:bg-[#2a2a2a] border border-transparent overflow-hidden select-none transition-[max-width,background-color,border-color] ease-in-out cursor-pointer lg:cursor-default px-2 justify-start ${isOpen ? "max-w-[240px] bg-gray-200 dark:bg-[#3a3a3a] dark:border-gray-600 duration-[1500ms]" : "max-w-8 duration-[900ms]"}`}
       style={{
-        width: isExpanded ? undefined : '1.75rem', // w-7 = 28px
         WebkitTapHighlightColor: 'transparent',
         touchAction: 'manipulation',
       }}
-      onMouseEnter={(e) => {
-        // Stop propagation to prevent parent hover effects
-        e.stopPropagation()
-        
-        // Completely disable hover on mobile or touch devices
-        if (isMobile || hasTouch) return
-        
-        if (containerRef.current) {
-          setIsHovered(true)
-          expandLogo(containerRef.current)
-        }
-      }}
-      onMouseLeave={(e) => {
-        // Stop propagation to prevent parent hover effects
-        e.stopPropagation()
-        
-        // Completely disable hover on mobile or touch devices
-        if (isMobile || hasTouch) return
-        
-        if (containerRef.current) {
-          setIsHovered(false)
-          collapseLogo(containerRef.current)
-        }
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onPointerDown={handlePointerDown}
       onClick={handleClick}
-      onTouchStart={handleTouchStart}
-      onMouseDown={(e) => {
-        // Always stop propagation to prevent parent clicks
-        e.stopPropagation()
-        e.preventDefault()
-        
-        if (isMobile && e.button === 0) {
-          // Only use if touch/click didn't fire
-          if (!touchHandledRef.current) {
-            toggleMobile()
-          }
-        }
-      }}
     >
-      <div className="absolute top-1/2 w-4 h-4 flex items-center justify-center -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ left: '13.5px' }}>
-        <img 
-          src={logoUrl} 
-          alt={tech}
-          className="w-full h-full object-contain pointer-events-none"
-        />
-      </div>
-      <div 
-        className={`absolute top-1/2 -translate-y-1/2 flex items-center transition-opacity duration-300 ${isExpanded ? 'opacity-100 visible' : 'opacity-0 invisible'}`} 
-        style={{ left: '28px', pointerEvents: 'none' }}
+      <img 
+        src={logoUrl} 
+        alt={tech}
+        className="h-4 w-4 min-h-4 min-w-4 flex-none object-contain pointer-events-none"
+        draggable={false}
+      />
+      <span 
+        className="inline-block min-w-0 max-w-[200px] pl-2 text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap"
       >
-        <span ref={textRef} className="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
-          {tech}
-        </span>
-      </div>
+        {tech}
+      </span>
     </div>
   )
 }

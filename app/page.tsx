@@ -93,13 +93,13 @@ export default function Portfolio() {
           <div className="w-full gap-4 grid grid-cols-1 md:grid-cols-3 items-center">
             <div 
               ref={(el) => { cardRefs.current[0] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`group transition-all duration-500 ease-out ${
                 visibleCards[0] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
+              <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                   <h4 className="text-white font-semibold text-xl">Modern Dashboard</h4>
@@ -114,7 +114,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                   <p className="text-white text-sm leading-relaxed mb-3">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
                   <div className="flex flex-wrap items-center gap-2">
                     <TechLogo tech="React" />
@@ -127,13 +127,13 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[1] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`group transition-all duration-500 ease-out ${
                 visibleCards[1] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
+              <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Mobile App</p>
                   <h4 className="text-white font-semibold text-xl">iOS Interface</h4>
@@ -148,7 +148,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                   <p className="text-white text-sm leading-relaxed mb-3">A sleek iOS interface design focused on user experience and accessibility</p>
                   <div className="flex flex-wrap items-center gap-2">
                     <TechLogo tech="React" />
@@ -161,13 +161,13 @@ export default function Portfolio() {
             
             <div 
               ref={(el) => { cardRefs.current[2] = el }}
-              className={`transition-all duration-500 ease-out ${
+              className={`group transition-all duration-500 ease-out ${
                 visibleCards[2] 
                   ? 'opacity-100 transform translate-y-0' 
                   : 'opacity-0 transform translate-y-8'
               }`}
             >
-              <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden focus:outline-none">
+              <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden focus:outline-none">
                 <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                   <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                   <h4 className="text-white font-semibold text-xl">Portfolio Site</h4>
@@ -181,7 +181,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
                 
                 {/* Description card - always visible on mobile, hover on desktop */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                   <p className="text-white text-sm leading-relaxed mb-3">A minimalist portfolio showcasing creative work with smooth animations</p>
                   <div className="flex flex-wrap items-center gap-2">
                     <TechLogo tech="React" />

@@ -25,6 +25,7 @@ export const InfiniteMovingCards = ({
   const scrollerRef = React.useRef<HTMLUListElement>(null);
 
   const [start, setStart] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   
   // Extract animation duration from className immediately
   const animationDuration = React.useMemo(() => {
@@ -88,10 +89,25 @@ export const InfiniteMovingCards = ({
           " flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
+        onMouseEnter={() => {
+          if (pauseOnHover) {
+            setIsPaused(true);
+          }
+        }}
+        onMouseLeave={() => {
+          if (pauseOnHover) {
+            setIsPaused(false);
+          }
+        }}
         style={{
-          ...(start ? {
-            animation: `scroll ${animationDuration || '40s'} ${direction === "left" ? "forwards" : "reverse"} linear infinite`
-          } : {}),
+          ...(start
+            ? {
+                animation: `scroll ${animationDuration || "40s"} ${
+                  direction === "left" ? "forwards" : "reverse"
+                } linear infinite`,
+                animationPlayState: isPaused ? "paused" : "running",
+              }
+            : {}),
         } as React.CSSProperties}
       >
         {items.map((item, idx) => (

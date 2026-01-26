@@ -75,13 +75,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[0] = el }}
-                className={`transition-all duration-500 ease-out ${
+                className={`group transition-all duration-500 ease-out ${
                   visibleCards[0] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                 <h4 className="text-white font-semibold text-xl">Modern Dashboard</h4>
@@ -96,7 +96,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A comprehensive admin dashboard with real-time analytics and intuitive data visualization</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -112,13 +112,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[1] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[1] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Mobile App</p>
                 <h4 className="text-white font-semibold text-xl">iOS Interface</h4>
@@ -133,7 +133,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A sleek iOS interface design focused on user experience and accessibility</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -149,13 +149,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[2] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[2] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web Design</p>
                 <h4 className="text-white font-semibold text-xl">Portfolio Site</h4>
@@ -170,7 +170,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A minimalist portfolio showcasing creative work with smooth animations</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -186,13 +186,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[3] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[3] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">E-commerce</p>
                 <h4 className="text-white font-semibold text-xl">Online Store</h4>
@@ -207,7 +207,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A modern e-commerce platform with seamless checkout and product discovery</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -223,13 +223,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[4] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[4] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">SaaS</p>
                 <h4 className="text-white font-semibold text-xl">Analytics Tool</h4>
@@ -244,7 +244,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">An advanced analytics tool with interactive charts and business intelligence features</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="TypeScript" />
@@ -260,13 +260,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[5] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[5] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Mobile App</p>
                 <h4 className="text-white font-semibold text-xl">Fitness Tracker</h4>
@@ -281,7 +281,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A comprehensive fitness tracker with workout plans and progress monitoring</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -297,13 +297,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[6] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[6] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider drop-shadow-lg">Web App</p>
                 <h4 className="text-white font-semibold text-xl drop-shadow-lg">Clean Design</h4>
@@ -318,7 +318,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A beautifully designed web app with clean UI and smooth user interactions</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -334,13 +334,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[7] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[7] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Web App</p>
                 <h4 className="text-white font-semibold text-xl">Task Manager</h4>
@@ -355,7 +355,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A powerful task management system with team collaboration and project tracking</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
@@ -371,13 +371,13 @@ export default function Projects() {
             <a href="#" className="block focus:outline-none">
               <div 
                 ref={(el) => { cardRefs.current[8] = el }}
-                className={`transition-all duration-800 ease-out ${
+                className={`group transition-all duration-800 ease-out ${
                   visibleCards[8] 
                     ? 'opacity-100 transform translate-y-0' 
                     : 'opacity-0 transform translate-y-8'
                 }`}
               >
-                <HeroCard className="col-span-1 h-[380px] group cursor-pointer relative overflow-hidden">
+                <HeroCard className="col-span-1 h-[380px] group project-card cursor-pointer relative overflow-hidden">
               <CardHeader className="absolute z-10 top-4 left-4 flex-col items-start">
                 <p className="text-tiny text-white/80 uppercase font-bold tracking-wider">Mobile App</p>
                 <h4 className="text-white font-semibold text-xl">Social Media</h4>
@@ -392,7 +392,7 @@ export default function Projects() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-5" />
               
               {/* Description card - always visible on mobile, hover on desktop */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transform translate-y-0 lg:translate-y-full lg:group-hover:translate-y-0 transition-transform duration-300 ease-out z-20">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 transition-[transform,opacity] duration-300 ease-out z-20 project-info">
                 <p className="text-white text-sm leading-relaxed mb-3">A modern social media app with real-time messaging and content sharing</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <TechLogo tech="React" />
