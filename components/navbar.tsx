@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, memo, useCallback, useRef } from "react";
+import React, { useState, memo, useCallback, useRef, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { 
@@ -19,6 +19,7 @@ const PortfolioNavbar = memo(() => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { navItems, handleNavClick } = useStableNavbar();
   const navbarRef = useRef<HTMLDivElement>(null);
+  const scrollLockY = useRef(0);
 
   const handleMobileMenuToggle = useCallback(() => {
     setMobileMenuOpen(prev => !prev);
@@ -27,6 +28,52 @@ const PortfolioNavbar = memo(() => {
   const handleMobileMenuClose = useCallback(() => {
     setMobileMenuOpen(false);
   }, []);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    if (mobileMenuOpen) {
+      scrollLockY.current = scrollY;
+      root.classList.add("nav-open");
+      body.classList.add("nav-open");
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+      body.style.height = "100%";
+      body.style.overflow = "hidden";
+    } else {
+      const previousTop = body.style.top;
+      root.classList.remove("nav-open");
+      body.classList.remove("nav-open");
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.height = "";
+      body.style.overflow = "";
+      const restored = previousTop ? parseInt(previousTop, 10) * -1 : scrollLockY.current;
+      if (!Number.isNaN(restored)) {
+        window.scrollTo(0, restored);
+      }
+    }
+
+    return () => {
+      root.classList.remove("nav-open");
+      body.classList.remove("nav-open");
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.height = "";
+      body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <Navbar ref={navbarRef} className="relative">

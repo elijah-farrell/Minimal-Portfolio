@@ -500,43 +500,16 @@ export const NavItems = React.memo(({ items, className, onItemClick, scrollToSec
 
 NavItems.displayName = 'NavItems';
 
-export const MobileNav = React.memo(({ children, className, visible, animationsEnabled = false }: MobileNavProps) => {
-  const [isInitialized, setIsInitialized] = useState(false);
-  
-  useLayoutEffect(() => {
-    setIsInitialized(true);
-  }, []);
-
-  // Calculate the exact initial state to prevent any animation
-  const initialBackdropFilter = visible ? "blur(8px)" : "none";
-  const initialBoxShadow = visible
-    ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
-    : "none";
-
+export const MobileNav = React.memo(({ children, className }: MobileNavProps) => {
   return (
-    <motion.div
-      initial={{
-        backdropFilter: initialBackdropFilter,
-        boxShadow: initialBoxShadow,
-      }}
-      animate={{
-        backdropFilter: visible ? "blur(8px)" : "none",
-        boxShadow: visible
-          ? "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)"
-          : "none",
-      }}
-      transition={{
-        duration: animationsEnabled && isInitialized ? 0.1 : 0,
-        ease: "easeOut",
-      }}
-       className={cn(
-         "relative z-10 mx-auto flex w-full max-w-4xl flex-row items-center px-4 py-2 md:hidden",
-         visible ? "bg-white/95 dark:bg-[#171717]/90 border-b border-white/30 dark:border-[#2a2a2a]/20" : "bg-transparent",
-         className,
-       )}
+    <div
+      className={cn(
+        "relative z-10 mx-auto flex w-full max-w-4xl flex-row items-center px-4 py-2 md:hidden bg-background border-b border-border",
+        className,
+      )}
     >
       {children}
-    </motion.div>
+    </div>
   );
 });
 
@@ -568,26 +541,21 @@ export const MobileNavMenu = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ 
-            height: 0,
-            opacity: 0
+          initial={{
+            opacity: 0,
           }}
-          animate={{ 
-            height: "100vh",
-            opacity: 1
+          animate={{
+            opacity: 1,
           }}
-          exit={{ 
-            height: 0,
-            opacity: 0
+          exit={{
+            opacity: 0,
           }}
           transition={{
-            duration: 0.3,
+            duration: 0.2,
             ease: "easeOut",
-            height: { duration: 0.3 },
-            opacity: { duration: 0.2 }
           }}
           className={cn(
-            "absolute inset-x-0 top-0 z-20 flex w-full flex-col bg-white/98 dark:bg-[#171717]/95 backdrop-blur-sm",
+            "fixed inset-0 z-20 flex w-full flex-col bg-background text-foreground",
             className,
           )}
         >

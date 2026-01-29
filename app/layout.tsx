@@ -1,7 +1,6 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { GeistSans } from "geist/font/sans"
-import { ThemeProvider } from "@/components/theme-provider"
 import { PortfolioNavbar } from "@/components/navbar"
 import "./globals.css"
 
@@ -19,6 +18,12 @@ export const metadata: Metadata = {
   }
 }
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,24 +35,33 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
-                } else {
-                  document.documentElement.classList.remove('dark')
-                }
-              } catch (_) {
-                document.documentElement.classList.add('dark')
-              }
+              (function () {
+                try {
+                  var stored = localStorage.getItem("theme");
+                  var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                  var theme = stored === "light" || stored === "dark"
+                    ? stored
+                    : (prefersDark ? "dark" : "light");
+
+                  var root = document.documentElement;
+                  root.classList.remove("light", "dark");
+                  root.classList.add(theme);
+                  var meta = document.querySelector('meta[name="theme-color"]');
+                  if (!meta) {
+                    meta = document.createElement("meta");
+                    meta.name = "theme-color";
+                    document.head.appendChild(meta);
+                  }
+                  meta.content = theme === "dark" ? "#171717" : "#ffffff";
+                } catch (e) {}
+              })();
             `,
           }}
         />
       </head>
       <body suppressHydrationWarning className="font-geist">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <PortfolioNavbar />
-          {children}
-        </ThemeProvider>
+        <PortfolioNavbar />
+        {children}
       </body>
     </html>
   )
